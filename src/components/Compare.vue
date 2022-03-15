@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, Ref } from '@vue/reactivity'
-import { nextTick, watch } from '@vue/runtime-core'
+import { nextTick, watch, onBeforeUnmount } from '@vue/runtime-core'
 import * as echarts from 'echarts'
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -31,11 +31,12 @@ const metrics: Ref<string[]> = ref(['Likes', 'Retweets', 'Replies', 'Clicks'])
 const metric: Ref<string> = ref('')
 const showChart: Ref<boolean> = ref(false)
 const chart: Ref<any> = ref(null)
+let timer: any = null
 
 /**
  * chart 相关
  */
-const updateFrequency: number = 4000 // 更新间隔
+const updateFrequency: number = 6000
 const tweetNumber: number = 10 // tweet数量
 const dayNumber: number = 10 // 天数
 const colors: string[] = ['#ffc461', '#eb833a', '#6d684b', '#fff1df', '#7f482a', '#af9d3c']
@@ -69,6 +70,7 @@ watch(showChart, (val: boolean) => {
           left: 150,
           right: 80
         },
+        color: colors,
         xAxis: {
           type: 'value'
         },
@@ -87,24 +89,21 @@ watch(showChart, (val: boolean) => {
           },
           data: tweets,
           animationDuration: 300,
-          animationDurationUpdate: 1500
+          animationDurationUpdate: 300
         },
         series: [{
           realtimeSort: true,
           seriesLayoutBy: 'column',
           type: 'bar',
-          itemStyle: {
-            color: () => colors[Math.round(Math.random() * 5)]
-          },
+          colorBy: 'data',
           label: {
             show: true,
-            precision: 1,
             position: 'right',
             valueAnimation: true,
             fontFamily: 'monospace'
           }
         }],
-        animationDuration: 0,
+        animationDuration: updateFrequency,
         animationDurationUpdate: updateFrequency,
         animationEasing: 'linear',
         animationEasingUpdate: 'linear',
@@ -124,46 +123,23 @@ watch(showChart, (val: boolean) => {
         }
       }
 
-      function updateDay (i) {
-        console.log(raw[i])
-        console.log(days[i])
-        chartOption.value.series[0].data = raw[i]
-        chartOption.value.graphic.elements[0].style.text = days[i]
-        chart.value.setOption(chartOption.value)
-      }
-      // for (let i = 0; i < dayNumber; i++) {
-      //   (function (i) {
-      //     setTimeout(updateDay(i), i * updateFrequency)
-      //   })(i)
-      // }
-
-      // function run() {
-      //   for (let i = 0; i < dayNumber; ++i) {
-      //     if (Math.random() > 0.9) {
-      //       data[i] += Math.round(Math.random() * 2000)
-      //     } else {
-      //       data[i] += Math.round(Math.random() * 200)
-      //     }
-      //   }
-      //   myChart.setOption({
-      //     series: [
-      //       {
-      //         type: 'bar',
-      //         data
-      //       }
-      //     ]
-      //   })
-      // }
       let index = 0
-      setTimeout(function () {
-        updateDay(index)
-        index++
-      }, 0)
-      setInterval(function () {
-        updateDay(index)
-        index++
-      }, 3000)
+      function update () {
+        chartOption.value.series[0].data = raw[index]
+        chartOption.value.graphic.elements[0].style.text = days[index]
+
+        if (index < dayNumber - 1) index++
+        else clearInterval(timer)
+      }
+      update()
+      timer = setInterval(update, updateFrequency)
     })
+  }
+})
+
+onBeforeUnmount(() => {
+  if (timer) {
+    clearInterval(timer)
   }
 })
 </script>
