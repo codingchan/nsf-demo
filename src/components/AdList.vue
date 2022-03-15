@@ -48,6 +48,7 @@ const emits = defineEmits(['edit', 'delete', 'upload'])
   border-radius: 4px;
   padding: 20px 10px;
   margin-bottom: 20px;
+  word-break: break-all;
 }
 
 .actions {

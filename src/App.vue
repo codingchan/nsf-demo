@@ -35,7 +35,7 @@ function deleteAd (index: number) {
     :ad-list="adList"
     @edit="editAd"
     @delete="deleteAd"
-    @upload="changeStep('welcome')"
+    @upload="changeStep('compare')"
   />
   <Compare v-if="step === 'compare'" />
 </template>

@@ -12,7 +12,7 @@ const emits = defineEmits(['click'])
         for<br />
         my article
       </div>
-      <div class="btn" @click="emits('click', 'compare')">
+      <div class="btn">
         Article<br />
         VS<br />
         Article
