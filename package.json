@@ -8,8 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "echarts": "^5.3.1",
     "sass": "^1.49.9",
-    "vue": "^3.2.25"
+    "vue": "^3.2.25",
+    "vue-echarts": "^6.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.2.0",

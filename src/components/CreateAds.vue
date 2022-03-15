@@ -3,7 +3,7 @@ import { ref, Ref } from '@vue/reactivity'
 import { onMounted, watch } from '@vue/runtime-core'
 
 const props = defineProps(['initAdList', 'actived'])
-const emits = defineEmits(['down'])
+const emits = defineEmits(['done'])
 
 const adList: Ref<string[]> = ref([''])
 const currentAdIndex: Ref<number> = ref(0)
@@ -51,11 +51,14 @@ watch(editContent, (val: string) => {
       <textarea v-model="editContent"></textarea>
     </div>
     <div class="actions">
-      <div class="articleUrl"><a href="http://">Article URL</a></div>
+      <div class="articleUrl">
+        Article: U.S. Warns China Not to Help Russia in Ukraine<br />
+        URL: <a href="https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war">https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war</a>
+      </div>
 
       <button @click="create">+</button>
 
-      <button @click="emits('down', adList)">DOWN</button>
+      <button @click="emits('done', adList)">DONE</button>
     </div>
   </div>
 </template>
@@ -124,5 +127,7 @@ watch(editContent, (val: string) => {
   padding: 10px 20px;
   border: 1px solid #dcdee2;
   border-radius: 4px;
+  word-break: break-all;
+  line-height: 1.5;
 }
 </style>

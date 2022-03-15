@@ -13,7 +13,7 @@ function changeStep (_step: string) {
   step.value = _step
 }
 
-function adsEditDown (_adList: string[]) {
+function adsEditDone (_adList: string[]) {
   adList.value = _adList
   changeStep('adList')
 }
@@ -29,7 +29,7 @@ function deleteAd (index: number) {
 
 <template>
   <Welcome v-if="step === 'welcome'" @click="changeStep" />
-  <Test v-if="step === 'test'" :init-ad-list="adList" :actived="editAdIndex" @down="adsEditDown" />
+  <Test v-if="step === 'test'" :init-ad-list="adList" :actived="editAdIndex" @done="adsEditDone" />
   <ad-list
     v-if="step === 'adList'"
     :ad-list="adList"
