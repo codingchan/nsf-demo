@@ -48,7 +48,12 @@ watch(editContent, (val: string) => {
     </ul>
     <div class="adEditor">
       <h1>Message {{ currentAdIndex + 1 }}</h1>
-      <textarea v-model="editContent"></textarea>
+      <div class="twitter-wrapper">
+        <img src="@/assets/portrait.jpg" class="portrait" />
+        <div class="editor">
+          <div class="editor-container" contenteditable></div>
+        </div>
+      </div>
     </div>
     <div class="actions">
       <div class="articleUrl">
@@ -96,14 +101,23 @@ watch(editContent, (val: string) => {
   h1 {
     margin-bottom: 30px;
   }
+}
 
-  textarea {
+.twitter-wrapper {
+  border: 1px solid #dcdee2;
+  border-radius: 4px;
+  padding: 20px;
+  display: flex;
+
+  .portrait {
+    width: 48px;
+    height: 48px;
+    border-radius: 100%;
+    margin-right: 12px;
+  }
+
+  .editor {
     flex: 1;
-    padding: 20px;
-    border: 1px solid #dcdee2;
-    border-radius: 4px;
-    resize: none;
-    font-size: 20px;
   }
 }
 
