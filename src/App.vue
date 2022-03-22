@@ -2,17 +2,19 @@
 import { ref, Ref } from '@vue/reactivity'
 import Targets from './components/Targets.vue'
 import Welcome from './components/Welcome.vue'
+import Article from './components/Article.vue'
 import Test from './components/CreateAds.vue'
 import AdList from './components/AdList.vue'
 import Compare from './components/Compare.vue'
 
 const timeline: Ref<any[]> = ref([
-  { key: 'targets', title: 'Targets & Buget' },
+  // { key: 'targets', title: 'Targets & Buget' },
   { key: 'welcome', title: 'Choose' },
+  { key: 'article', title: 'Article' },
   { key: 'test', title: 'Tweet' },
   { key: 'compare', title: 'Complete' },
 ])
-const step: Ref<string> = ref('test')
+const step: Ref<string> = ref('welcome')
 const adList: Ref<string[]> = ref([])
 const editAdIndex: Ref<number> = ref(-1)
 
@@ -46,13 +48,14 @@ function deleteAd (index: number) {
         hide-timestamp
         :type="item.key === step ? 'primary' : ''"
       >
-        <span :class=" { timelineContent: true, active: item.key === step }" @click="changeStep(item.key)">{{ item.title }}</span>
+        <span :class=" { timelineContent: true, active: item.key === step }">{{ item.title }}</span>
       </el-timeline-item>
     </el-timeline>
   </div>
   <div class="app-content">
     <Targets v-if="step === 'targets'" @ok="changeStep('budget')" />
     <Welcome v-if="step === 'welcome'" @click="changeStep" />
+    <Article v-if="step === 'article'" @ok="changeStep('test')" />
     <Test v-if="step === 'test'" :init-ad-list="adList" :actived="editAdIndex" @done="adsEditDone" />
     <ad-list
       v-if="step === 'adList'"
@@ -93,7 +96,7 @@ ul, li {
 .timelineContent {
   font-size: 18px;
   font-weight: bold;
-  cursor: pointer;
+  cursor: default;
 }
 
 .timelineContent.active {

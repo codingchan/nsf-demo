@@ -5,7 +5,7 @@ const emits = defineEmits(['click'])
 <template>
   <div class="welcome-wrapper">
     <div class="btns">
-      <div class="btn" @click="emits('click', 'test')">
+      <div class="btn" @click="emits('click', 'article')">
         Test Tweets<br />
         for<br />
         my article
