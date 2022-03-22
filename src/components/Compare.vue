@@ -27,7 +27,6 @@ function getBeforeDate (n: number) { // 获取今天前第n天的日期
   return (month < 10 ? ('0' + month) : month) + '-' + (day < 10 ? ('0' + day) : day)
 }
 
-const metrics: Ref<string[]> = ref(['Likes', 'Retweets', 'Replies', 'Clicks'])
 const metric: Ref<string> = ref('')
 const showChart: Ref<boolean> = ref(false)
 const chart: Ref<any> = ref(null)
@@ -150,9 +149,10 @@ onBeforeUnmount(() => {
     <div v-else class="metrics">
       <h1>Who is the winner?</h1>
       <h3>[ Select your metric ]</h3>
-      <div class="metricList"></div>
       <div class="metricList">
-        <div v-for="item in metrics" :key="item" class="metricItem" @click="showChart = true">{{ item }}</div>
+        <div class="metricItem" @click="showChart = true">Retweets<br />Likes<br />Replies<br />Clicks</div>
+        <div class="metricItem" @click="showChart = true">URL</div>
+        <div class="metricItem" @click="showChart = true">Machine Learning</div>
       </div>
     </div>
   </div>
@@ -176,19 +176,21 @@ onBeforeUnmount(() => {
 }
 
 .metricList {
+  margin-top: 30px;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .metricItem {
-  width: 22%;
-  height: 100px;
-  margin: 30px 1.4% 0;
+  width: 30%;
+  height: 150px;
   border: 1px solid #dcdee2;
   border-radius: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  line-height: 1.5;
 }
 
 .chart-box {
