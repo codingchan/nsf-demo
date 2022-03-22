@@ -1,14 +1,56 @@
 <script lang="ts" setup>
 import { ref, Ref } from '@vue/reactivity'
-import { watch } from '@vue/runtime-core'
+import { computed, watch } from '@vue/runtime-core'
 import DivEditor from './divEditor.vue'
+
+// 获取字符串字节数
+function getStringByteLength (val: string) {
+  const str = new String(val)
+  let bytesCount = 0
+  for (let i = 0, n = str.length; i < n; i++) {
+    const c = str.charCodeAt(i)
+    if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+      bytesCount += 1
+    } else {
+      bytesCount += 2
+    }
+  }
+  return bytesCount
+}
 
 const emits = defineEmits(['change', 'save'])
 
 const editContent: Ref<string> = ref('')
 function changeEditContent (val: string) {
   editContent.value = val
-} 
+}
+
+const editContentByteLength = computed<number>(() => getStringByteLength(editContent.value))
+const progressPercentage = computed<number>(() => editContentByteLength.value > 280 ? 100 : Number((editContentByteLength.value / 260 * 100).toFixed(2)))
+const progressWidth = computed<number>(() => editContentByteLength.value < 260 ? 20 : 30)
+const progressColor = computed<string>(() => {
+  if (editContentByteLength.value < 260) {
+    return '#1d9bf0'
+  } else if (editContentByteLength.value >= 260 && editContentByteLength.value < 280) {
+    return '#ffd400'
+  } else {
+    return '#f4212e'
+  }
+})
+const progressContent = computed<string>(() => {
+  if (editContentByteLength.value >= 260) {
+    return (280 - editContentByteLength.value).toString()
+  } else {
+    return ''
+  }
+})
+const progressContentColor = computed<string>(() => {
+  if (editContentByteLength.value < 280) {
+    return '#536471'
+  } else {
+    return '#f4212e'
+  }
+})
 
 watch(editContent, (val: string) => {
   emits('change', val)
@@ -43,7 +85,23 @@ defineExpose({ changeEditContent })
             <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2z"></path><path d="M-37.9 18c-.1-.1-.1-.1-.1-.2.1 0 .1.1.1.2zM18 2.2h-1.3v-.3c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8v.3H7.7v-.3c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8v.3H4.8c-1.4 0-2.5 1.1-2.5 2.5v13.1c0 1.4 1.1 2.5 2.5 2.5h2.9c.4 0 .8-.3.8-.8 0-.4-.3-.8-.8-.8H4.8c-.6 0-1-.5-1-1V7.9c0-.3.4-.7 1-.7H18c.6 0 1 .4 1 .7v1.8c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-5c-.1-1.4-1.2-2.5-2.6-2.5zm1 3.7c-.3-.1-.7-.2-1-.2H4.8c-.4 0-.7.1-1 .2V4.7c0-.6.5-1 1-1h1.3v.5c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-.5h7.5v.5c0 .4.3.8.8.8.4 0 .8-.3.8-.8v-.5H18c.6 0 1 .5 1 1v1.2z"></path><path d="M15.5 10.4c-3.4 0-6.2 2.8-6.2 6.2 0 3.4 2.8 6.2 6.2 6.2 3.4 0 6.2-2.8 6.2-6.2 0-3.4-2.8-6.2-6.2-6.2zm0 11c-2.6 0-4.7-2.1-4.7-4.7s2.1-4.7 4.7-4.7 4.7 2.1 4.7 4.7c0 2.5-2.1 4.7-4.7 4.7z"></path><path d="M18.9 18.7c-.1.2-.4.4-.6.4-.1 0-.3 0-.4-.1l-3.1-2v-3c0-.4.3-.8.8-.8.4 0 .8.3.8.8v2.2l2.4 1.5c.2.2.3.6.1 1z"></path></g></svg>
           </button>
         </div>
-        <button class="save-btn" :disabled="editContent === ''" @click="emits('save')">Save</button>
+        <div class="toolbar-right">
+          <div v-show="editContent" class="progress-box">
+            <el-progress
+              v-show="editContentByteLength < 290"
+              type="circle"
+              :width="progressWidth"
+              :stroke-width="2"
+              :percentage="progressPercentage"
+              :color="progressColor"
+            >
+              <i></i>
+            </el-progress>
+            <span class="progress-text" :style="{ color: progressContentColor }">{{ progressContent }}</span>
+          </div>
+          <div v-show="editContent" class="divider"></div>
+          <button class="save-btn" :disabled="editContent === ''" @click="emits('save')">Save</button>
+        </div>
       </div>
     </div>
   </div>
@@ -111,6 +169,41 @@ defineExpose({ changeEditContent })
         height: 20px;
         fill: currentcolor;
       }
+    }
+
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress-box {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .progress-text {
+      font-size: 13px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 16px;
+      margin: -8px 0 0 -8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .divider {
+      height: 31px;
+      margin: 0 12px 0 10px;
+      width: 1px;
+      background-color: #b9cad3;
     }
 
     .save-btn {

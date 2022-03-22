@@ -94,6 +94,7 @@ export default defineComponent({
   outline: none;
   white-space: pre-wrap;
   overflow-wrap: break-word;
+  word-break: break-word;
   user-select: text;
   -webkit-user-modify: read-write-plaintext-only;
 }
