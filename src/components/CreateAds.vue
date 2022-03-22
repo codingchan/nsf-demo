@@ -51,7 +51,22 @@ onMounted(() => {
     <div class="adEditor">
       <h1>Message {{ currentAdIndex + 1 }}</h1>
       <twitter-editor ref="twitterEditor" @change="handleChangeTwitterValue" @save="create" />
-      <div class="suggestion">Learn how to start building, shipping, and maintaining software with GitHub. Explore our products, sign up for an account, and connect with the world's largest development community.</div>
+      <div class="tips">
+        <p><span>Tip 1:</span> Avoid repeating misinformation. Say what’s true.</p>
+        <p><span>Tip 2</span>: Choose your sources wisely. Try to find a credible source that the person respects.</p>
+        <p><span>Tip 3</span>: Give readers a sense of where the scientific community stands and how strong the available evidence is for different views.</p>
+        <p><span>Tip 4</span>: Consider headlines and images that inform rather than shock or provoke.</p>
+      </div>
+      <div class="eurekaAlert">
+        <h4>Eureka Alert</h4>
+        <div>
+          <img src="@/assets/eurekaAlert.webp" />
+          <p>
+            A new study point at the importance of active, discursive processes of information verification in the current media environment, particularly when it comes to political (mis)information. The study further highlights the role of group dynamics and group norms—modelled by the behaviour of everyday participants as well as of the group admin—in promoting the adoption of journalistic practices of fact-checking and source vetting and increasing participant accountability.<br />
+            URL: <a href="https://www.tandfonline.com/doi/full/10.1080/21670811.2021.1972020?casa_token=42E8sehZjokAAAAA%3A9YQJMaVbwntsndrkQ-urUmy-o-jeIm05-gM96VPbIzWUejqEKjTQJzmeG1i_7nkypZBRsV-Exldb">https://www.tandfonline.com/doi/full/10.1080/21670811.2021.1972020?casa_token=42E8sehZjokAAAAA%3A9YQJMaVbwntsndrkQ-urUmy-o-jeIm05-gM96VPbIzWUejqEKjTQJzmeG1i_7nkypZBRsV-Exldb</a>
+          </p>
+        </div>
+      </div>
     </div>
     <div class="actions">
       <div class="articleUrl">
@@ -68,8 +83,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .createAds-wrapper {
-  height: 90%;
-  width: 90%;
+  padding: 5%;
   display: flex;
   justify-content: space-between;
 }
@@ -77,12 +91,12 @@ onMounted(() => {
 .adList {
   border: 1px solid #dcdee2;
   border-radius: 4px;
-  padding: 20px 10px;
+  padding: 10px;
   width: 15%;
 }
 
 .adItem {
-  padding: 10px 20px;
+  padding: 10px;
   cursor: pointer;
 
   &.actived,
@@ -97,12 +111,47 @@ onMounted(() => {
   flex-direction: column;
 
   h1 {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
-  .suggestion {
-    font-size: 18px;
+  .tips {
     margin-top: 20px;
+    word-break: break-word;
+    padding: 20px 20px 10px;
+
+    p {
+      margin-bottom: 10px;
+    }
+
+    span {
+      font-weight: bold;
+    }
+  }
+
+  .eurekaAlert {
+    margin-top: 20px;
+    word-break: break-word;
+
+    h4 {
+      margin-bottom: 10px;
+      font-size: 18px;
+
+      & + div {
+        display: flex;
+        align-items: flex-start;
+      }
+    }
+
+    img {
+      width: 40%;
+      max-width: 200px;
+      margin-right: 10px;
+    }
+
+    p {
+      flex: 1;
+      word-break: break-all;
+    }
   }
 }
 
@@ -122,9 +171,10 @@ onMounted(() => {
   }
 }
 
-.suggestion,
+.tips,
+.eurekaAlert,
 .articleUrl {
-  padding: 10px 20px;
+  padding: 20px;
   border: 1px solid #dcdee2;
   border-radius: 4px;
   word-break: break-all;

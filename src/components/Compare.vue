@@ -160,8 +160,9 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .compare-wrapper {
-  height: 90%;
+  height: 100%;
   width: 90%;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;

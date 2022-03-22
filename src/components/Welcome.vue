@@ -4,8 +4,6 @@ const emits = defineEmits(['click'])
 
 <template>
   <div class="welcome-wrapper">
-    <h1>Welcome Page</h1>
-
     <div class="btns">
       <div class="btn" @click="emits('click', 'test')">
         Test Tweets<br />
@@ -23,21 +21,16 @@ const emits = defineEmits(['click'])
 
 <style lang="scss" scoped>
 .welcome-wrapper {
-  height: 60%;
+  height: 100%;
   width: 90%;
+  margin: 0 auto;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
 .btns {
-  width: 100%;
+  height: 60%;
   flex: 1;
   display: flex;
   justify-content: space-between;

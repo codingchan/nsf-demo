@@ -27,10 +27,7 @@ const emits = defineEmits(['edit', 'delete', 'upload'])
 
 <style lang="scss" scoped>
 .adList-wrapper {
-  height: 90%;
-  width: 90%;
-  display: flex;
-  flex-direction: column;
+  padding: 5%;
 }
 
 .adList {
@@ -70,6 +67,8 @@ const emits = defineEmits(['edit', 'delete', 'upload'])
   padding: 15px 0;
   width: 300px;
   max-width: 100%;
+  display: block;
+  margin: 0 auto;
   margin: 0 auto;
   border: 1px solid #dcdee2;
   border-radius: 4px;

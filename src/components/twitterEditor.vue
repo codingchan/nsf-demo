@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, Ref } from '@vue/reactivity'
 import { watch } from '@vue/runtime-core'
-import Contenteditable from 'vue-contenteditable'
+import DivEditor from './divEditor.vue'
 
 const emits = defineEmits(['change', 'save'])
 
@@ -23,7 +23,7 @@ defineExpose({ changeEditContent })
     <div>
       <div class="editor-box">
         <p v-show="editContent === ''" class="editor-placeholder">What’s happening?</p>
-        <Contenteditable v-model="editContent" tag="div" class="editor" />
+        <div-editor v-model="editContent" class="editor" />
       </div>
       <div class="twitter-toolbar">
         <div>
@@ -83,11 +83,6 @@ defineExpose({ changeEditContent })
   }
 
   .editor {
-    outline: none;
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-    user-select: text;
-    -webkit-user-modify: read-write-plaintext-only;
     color: #0f1419;
   }
 
