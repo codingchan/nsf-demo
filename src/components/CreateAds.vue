@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import { ref, Ref } from '@vue/reactivity'
-import { onMounted, watch } from '@vue/runtime-core'
+import { nextTick, onMounted } from '@vue/runtime-core'
+import TwitterEditor from './twitterEditor.vue'
 
 const props = defineProps(['initAdList', 'actived'])
 const emits = defineEmits(['done'])
 
 const adList: Ref<string[]> = ref([''])
 const currentAdIndex: Ref<number> = ref(0)
-const editContent: Ref<string> = ref('')
+const twitterEditor: Ref<any> = ref(null)
 
+function handleChangeTwitterValue (val: string) {
+  adList.value[currentAdIndex.value] = val
+}
 function changeCurrentAdIndex (current: number) {
   currentAdIndex.value = current
-  editContent.value = adList.value[current]
+  twitterEditor.value.changeEditContent(adList.value[current])
 }
 function create () {
   adList.value.push('')
@@ -27,11 +31,9 @@ onMounted(() => {
     currentAdIndex.value = props.actived
   }
 
-  editContent.value = adList.value[currentAdIndex.value]
-})
-
-watch(editContent, (val: string) => {
-  adList.value[currentAdIndex.value] = val
+  nextTick(() => {
+    twitterEditor.value.changeEditContent(adList.value[currentAdIndex.value])
+  })
 })
 </script>
 
@@ -48,12 +50,8 @@ watch(editContent, (val: string) => {
     </ul>
     <div class="adEditor">
       <h1>Message {{ currentAdIndex + 1 }}</h1>
-      <div class="twitter-wrapper">
-        <img src="@/assets/portrait.jpg" class="portrait" />
-        <div class="editor">
-          <div class="editor-container" contenteditable></div>
-        </div>
-      </div>
+      <twitter-editor ref="twitterEditor" @change="handleChangeTwitterValue" @save="create" />
+      <div class="suggestion">Learn how to start building, shipping, and maintaining software with GitHub. Explore our products, sign up for an account, and connect with the world's largest development community.</div>
     </div>
     <div class="actions">
       <div class="articleUrl">
@@ -101,23 +99,10 @@ watch(editContent, (val: string) => {
   h1 {
     margin-bottom: 30px;
   }
-}
 
-.twitter-wrapper {
-  border: 1px solid #dcdee2;
-  border-radius: 4px;
-  padding: 20px;
-  display: flex;
-
-  .portrait {
-    width: 48px;
-    height: 48px;
-    border-radius: 100%;
-    margin-right: 12px;
-  }
-
-  .editor {
-    flex: 1;
+  .suggestion {
+    font-size: 18px;
+    margin-top: 20px;
   }
 }
 
@@ -137,6 +122,7 @@ watch(editContent, (val: string) => {
   }
 }
 
+.suggestion,
 .articleUrl {
   padding: 10px 20px;
   border: 1px solid #dcdee2;

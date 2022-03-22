@@ -15,6 +15,9 @@ function changeStep (_step: string) {
 
 function adsEditDone (_adList: string[]) {
   adList.value = _adList
+  if (_adList[_adList.length - 1] === '') {
+    adList.value.pop()
+  }
   changeStep('adList')
 }
 
