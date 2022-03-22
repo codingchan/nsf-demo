@@ -36,7 +36,7 @@ let timer: any = null
  * chart 相关
  */
 const updateFrequency: number = 6000
-const tweetNumber: number = 10 // tweet数量
+const tweetNumber: number = 4 // tweet数量
 const dayNumber: number = 10 // 天数
 const colors: string[] = ['#ffc461', '#eb833a', '#6d684b', '#fff1df', '#7f482a', '#af9d3c']
 
