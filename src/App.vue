@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { ref, Ref } from '@vue/reactivity'
+import Targets from './components/Targets.vue'
 import Welcome from './components/Welcome.vue'
 import Test from './components/CreateAds.vue'
 import AdList from './components/AdList.vue'
 import Compare from './components/Compare.vue'
 
-const step: Ref<string> = ref('welcome')
+const timeline: Ref<any[]> = ref([
+  { key: 'targets', title: 'Targets & Buget' },
+  { key: 'welcome', title: 'Choose' },
+  { key: 'test', title: 'Tweet' },
+  { key: 'compare', title: 'Complete' },
+])
+const step: Ref<string> = ref('test')
 const adList: Ref<string[]> = ref([])
 const editAdIndex: Ref<number> = ref(-1)
 
@@ -31,16 +38,31 @@ function deleteAd (index: number) {
 </script>
 
 <template>
-  <Welcome v-if="step === 'welcome'" @click="changeStep" />
-  <Test v-if="step === 'test'" :init-ad-list="adList" :actived="editAdIndex" @done="adsEditDone" />
-  <ad-list
-    v-if="step === 'adList'"
-    :ad-list="adList"
-    @edit="editAd"
-    @delete="deleteAd"
-    @upload="changeStep('compare')"
-  />
-  <Compare v-if="step === 'compare'" />
+  <div class="timeline">
+    <el-timeline>
+      <el-timeline-item
+        v-for="(item, index) in timeline"
+        :key="index"
+        hide-timestamp
+        :type="item.key === step ? 'primary' : ''"
+      >
+        <span :class=" { timelineContent: true, active: item.key === step }" @click="changeStep(item.key)">{{ item.title }}</span>
+      </el-timeline-item>
+    </el-timeline>
+  </div>
+  <div class="app-content">
+    <Targets v-if="step === 'targets'" @ok="changeStep('budget')" />
+    <Welcome v-if="step === 'welcome'" @click="changeStep" />
+    <Test v-if="step === 'test'" :init-ad-list="adList" :actived="editAdIndex" @done="adsEditDone" />
+    <ad-list
+      v-if="step === 'adList'"
+      :ad-list="adList"
+      @edit="editAd"
+      @delete="deleteAd"
+      @upload="changeStep('compare')"
+    />
+    <Compare v-if="step === 'compare'" />
+  </div>
 </template>
 
 <style>
@@ -60,6 +82,25 @@ ul, li {
   color: #333;
   width: 100vw;
   height: 100vh;
-  overflow: auto;
+  display: flex;
+}
+
+.timeline {
+  padding: 20px;
+  margin-right: 20px;
+}
+
+.timelineContent {
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.timelineContent.active {
+  color: #409eff;
+}
+
+.app-content {
+  flex: 1;
 }
 </style>

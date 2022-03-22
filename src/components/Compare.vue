@@ -38,7 +38,7 @@ let timer: any = null
 const updateFrequency: number = 6000
 const tweetNumber: number = 4 // tweet数量
 const dayNumber: number = 10 // 天数
-const colors: string[] = ['#ffc461', '#eb833a', '#6d684b', '#fff1df', '#7f482a', '#af9d3c']
+const colors: string[] = ['#2f6ecd', '#f98e73', '#aae273', '#ac6fd4', '#e4a767', '#9caac1']
 
 const days: string[] = [] // 显示日期
 for (let i: number = dayNumber - 1; i >= 0; i--) {
@@ -95,6 +95,7 @@ watch(showChart, (val: boolean) => {
           seriesLayoutBy: 'column',
           type: 'bar',
           colorBy: 'data',
+          barWidth: '40%',
           label: {
             show: true,
             position: 'right',
