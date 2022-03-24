@@ -61,17 +61,17 @@ onMounted(() => {
         <h4>Eureka Alert</h4>
         <div>
           <img src="@/assets/eurekaAlert.webp" />
-          <p>
-            A new study point at the importance of active, discursive processes of information verification in the current media environment, particularly when it comes to political (mis)information. The study further highlights the role of group dynamics and group norms—modelled by the behaviour of everyday participants as well as of the group admin—in promoting the adoption of journalistic practices of fact-checking and source vetting and increasing participant accountability.<br />
-            URL: <a href="https://www.tandfonline.com/doi/full/10.1080/21670811.2021.1972020?casa_token=42E8sehZjokAAAAA%3A9YQJMaVbwntsndrkQ-urUmy-o-jeIm05-gM96VPbIzWUejqEKjTQJzmeG1i_7nkypZBRsV-Exldb">https://www.tandfonline.com/doi/full/10.1080/21670811.2021.1972020?casa_token=42E8sehZjokAAAAA%3A9YQJMaVbwntsndrkQ-urUmy-o-jeIm05-gM96VPbIzWUejqEKjTQJzmeG1i_7nkypZBRsV-Exldb</a>
-          </p>
+          <div>
+            <p>A new study point at the importance of active, discursive processes of information verification in the current media environment, particularly when it comes to political (mis)information. The study further highlights the role of group dynamics and group norms—modelled by the behaviour of everyday participants as well as of the group admin—in promoting the adoption of journalistic practices of fact-checking and source vetting and increasing participant accountability.</p>
+            <p class="url-text">URL: <a href="https://www.tandfonline.com/doi/full/10.1080/21670811.2021.1972020?casa_token=42E8sehZjokAAAAA%3A9YQJMaVbwntsndrkQ-urUmy-o-jeIm05-gM96VPbIzWUejqEKjTQJzmeG1i_7nkypZBRsV-Exldb">https://www.tandfonline.com/doi/full/10.1080/21670811.2021.1972020?casa_token=42E8sehZjokAAAAA%3A9YQJMaVbwntsndrkQ-urUmy-o-jeIm05-gM96VPbIzWUejqEKjTQJzmeG1i_7nkypZBRsV-Exldb</a></p>
+          </div>
         </div>
       </div>
     </div>
     <div class="actions">
       <div class="articleUrl">
-        Article: U.S. Warns China Not to Help Russia in Ukraine<br />
-        URL: <a href="https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war">https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war</a>
+        <p>Article: U.S. Warns China Not to Help Russia in Ukraine</p>
+        <p class="url-text">URL: <a href="https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war">https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war</a></p>
       </div>
 
       <button @click="create">+</button>
@@ -146,11 +146,10 @@ onMounted(() => {
       width: 40%;
       max-width: 200px;
       margin-right: 10px;
-    }
 
-    p {
-      flex: 1;
-      word-break: break-all;
+      & + div {
+        flex: 1;
+      }
     }
   }
 }
@@ -177,7 +176,11 @@ onMounted(() => {
   padding: 20px;
   border: 1px solid #dcdee2;
   border-radius: 4px;
-  word-break: break-all;
+  word-break: break-word;
   line-height: 1.5;
+}
+
+.url-text {
+  word-break: break-all;
 }
 </style>
