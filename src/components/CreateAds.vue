@@ -3,22 +3,33 @@ import { ref, Ref } from '@vue/reactivity'
 import { nextTick, onMounted } from '@vue/runtime-core'
 import TwitterEditor from './twitterEditor.vue'
 
+interface AdType {
+  content: string
+  img: string
+}
+
 const props = defineProps(['initAdList', 'actived'])
 const emits = defineEmits(['done'])
 
-const adList: Ref<string[]> = ref([''])
+const adList: Ref<AdType[]> = ref([{
+  content: '',
+  img: ''
+}])
 const currentAdIndex: Ref<number> = ref(0)
 const twitterEditor: Ref<any> = ref(null)
 
-function handleChangeTwitterValue (val: string) {
+function handleChangeTwitterValue (val: AdType) {
   adList.value[currentAdIndex.value] = val
 }
-function changeCurrentAdIndex (current: number) {
-  currentAdIndex.value = current
-  twitterEditor.value.changeEditContent(adList.value[current])
+function changeCurrentAdIndex (index: number) {
+  currentAdIndex.value = index
+  twitterEditor.value.changeEditContent(adList.value[index])
 }
 function create () {
-  adList.value.push('')
+  adList.value.push({
+    content: '',
+    img: ''
+  })
   changeCurrentAdIndex(adList.value.length - 1)
 }
 

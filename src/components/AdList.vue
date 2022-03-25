@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { PropType } from '@vue/runtime-core'
+import { Edit, Delete } from '@element-plus/icons-vue'
+
+interface AdType {
+  content: string
+  img: string
+}
 
 defineProps({
   adList: {
-    type: Array as PropType<string[]>,
+    type: Array as PropType<AdType[]>,
     required: true
   }
 })
@@ -12,22 +18,25 @@ const emits = defineEmits(['edit', 'delete', 'upload'])
 
 <template>
   <div class="adList-wrapper">
-    <div class="adList">
-      <div v-for="(ad, index) in adList" :key="index" class="adItem">
-        <div class="adContent">{{ ad }}</div>
-        <div class="actions">
-          <button style="margin-right: 20px;" @click="emits('edit', index)">edit</button>
-          <button @click="emits('delete', index)">delete</button>
+    <el-row :gutter="30">
+      <el-col v-for="(ad, index) in adList" :key="index" :xs="24" :sm="12" :md="8" class="adItem">
+        <div class="adContent">
+          <p>{{ ad.content }}</p>
+          <img :src="ad.img" :style="{ marginTop: ad.content ? '12px' : 0 }">
         </div>
-      </div>
-    </div>
+        <div class="actions">
+          <el-button :icon="Edit" circle @click="emits('edit', index)" />
+          <el-button :icon="Delete" circle @click="emits('delete', index)" />
+        </div>
+      </el-col>
+    </el-row>
     <button class="upload-btn" @click="emits('upload')">Tweet</button>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .adList-wrapper {
-  padding: 5%;
+  padding: 3%;
 }
 
 .adList {
@@ -36,30 +45,31 @@ const emits = defineEmits(['edit', 'delete', 'upload'])
 }
 
 .adItem {
-  width: 30%;
-  margin: 0 1.66% 30px;
+  margin-bottom: 30px;
 }
 
 .adContent {
   border: 1px solid #dcdee2;
   border-radius: 4px;
-  padding: 20px 10px;
+  padding: 20px;
   margin-bottom: 20px;
-  word-break: break-all;
+
+  p {
+    font-size: 14px;
+    line-height: 20px;
+    word-break: break-word;
+    overflow: hidden;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 350px;
+  }
 }
 
 .actions {
   display: flex;
   justify-content: center;
-
-  button {
-    border: 1px solid #dcdee2;
-    border-radius: 4px;
-    padding: 10px 15px;
-    background-color: transparent;
-    outline: none;
-    cursor: pointer;
-  }
 }
 
 .upload-btn {

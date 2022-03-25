@@ -7,6 +7,11 @@ import Test from './components/CreateAds.vue'
 import AdList from './components/AdList.vue'
 import Compare from './components/Compare.vue'
 
+interface AdType {
+  content: string
+  img: string
+}
+
 const timeline: Ref<any[]> = ref([
   // { key: 'targets', title: 'Targets & Buget' },
   { key: 'welcome', title: 'Choose' },
@@ -15,16 +20,16 @@ const timeline: Ref<any[]> = ref([
   { key: 'compare', title: 'Complete' },
 ])
 const step: Ref<string> = ref('welcome')
-const adList: Ref<string[]> = ref([])
+const adList: Ref<AdType[]> = ref([])
 const editAdIndex: Ref<number> = ref(-1)
 
 function changeStep (_step: string) {
   step.value = _step
 }
 
-function adsEditDone (_adList: string[]) {
+function adsEditDone (_adList: AdType[]) {
   adList.value = _adList
-  if (_adList[_adList.length - 1] === '') {
+  if (_adList[_adList.length - 1].content === '' && _adList[_adList.length - 1].img === '') {
     adList.value.pop()
   }
   changeStep('adList')
@@ -74,6 +79,10 @@ function deleteAd (index: number) {
   margin: 0;
 }
 
+html, body {
+  height: 100%;
+}
+
 ul, li {
   list-style: none;
 }
@@ -83,8 +92,8 @@ ul, li {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #333;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
 }
 
