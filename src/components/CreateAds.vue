@@ -57,16 +57,6 @@ onMounted(() => {
         <p><span>Tip 3</span>: Give readers a sense of where the scientific community stands and how strong the available evidence is for different views.</p>
         <p><span>Tip 4</span>: Consider headlines and images that inform rather than shock or provoke.</p>
       </div>
-      <div class="eurekaAlert">
-        <h4>Eureka Alert</h4>
-        <div>
-          <img src="@/assets/eurekaAlert.webp" />
-          <div>
-            <p>A new study point at the importance of active, discursive processes of information verification in the current media environment, particularly when it comes to political (mis)information. The study further highlights the role of group dynamics and group norms—modelled by the behaviour of everyday participants as well as of the group admin—in promoting the adoption of journalistic practices of fact-checking and source vetting and increasing participant accountability.</p>
-            <p class="url-text">URL: <a href="https://www.tandfonline.com/doi/full/10.1080/21670811.2021.1972020?casa_token=42E8sehZjokAAAAA%3A9YQJMaVbwntsndrkQ-urUmy-o-jeIm05-gM96VPbIzWUejqEKjTQJzmeG1i_7nkypZBRsV-Exldb">https://www.tandfonline.com/doi/full/10.1080/21670811.2021.1972020?casa_token=42E8sehZjokAAAAA%3A9YQJMaVbwntsndrkQ-urUmy-o-jeIm05-gM96VPbIzWUejqEKjTQJzmeG1i_7nkypZBRsV-Exldb</a></p>
-          </div>
-        </div>
-      </div>
     </div>
     <div class="actions">
       <div class="articleUrl">
@@ -83,9 +73,11 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .createAds-wrapper {
-  padding: 5%;
+  padding: 3%;
   display: flex;
   justify-content: space-between;
+  min-height: 100%;
+  box-sizing: border-box;
 }
 
 .adList {
@@ -127,31 +119,6 @@ onMounted(() => {
       font-weight: bold;
     }
   }
-
-  .eurekaAlert {
-    margin-top: 20px;
-    word-break: break-word;
-
-    h4 {
-      margin-bottom: 10px;
-      font-size: 18px;
-
-      & + div {
-        display: flex;
-        align-items: flex-start;
-      }
-    }
-
-    img {
-      width: 40%;
-      max-width: 200px;
-      margin-right: 10px;
-
-      & + div {
-        flex: 1;
-      }
-    }
-  }
 }
 
 .actions {
@@ -171,7 +138,6 @@ onMounted(() => {
 }
 
 .tips,
-.eurekaAlert,
 .articleUrl {
   padding: 20px;
   border: 1px solid #dcdee2;
