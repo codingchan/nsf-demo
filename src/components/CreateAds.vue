@@ -63,10 +63,10 @@ onMounted(() => {
       <h1>Message {{ currentAdIndex + 1 }}</h1>
       <twitter-editor ref="twitterEditor" @change="handleChangeTwitterValue" @save="create" />
       <div class="tips">
-        <p><span>Tip 1:</span> Avoid repeating misinformation. Say what’s true.</p>
-        <p><span>Tip 2</span>: Choose your sources wisely. Try to find a credible source that the person respects.</p>
-        <p><span>Tip 3</span>: Give readers a sense of where the scientific community stands and how strong the available evidence is for different views.</p>
-        <p><span>Tip 4</span>: Consider headlines and images that inform rather than shock or provoke.</p>
+        <p><span>Tip 1:</span> Avoid repeating misinformation. Say what’s true.<el-link type="primary">see more</el-link></p>
+        <p><span>Tip 2</span>: Choose your sources wisely. Try to find a credible source that the person respects.<el-link type="primary">see more</el-link></p>
+        <p><span>Tip 3</span>: Give readers a sense of where the scientific community stands and how strong the available evidence is for different views.<el-link type="primary">see more</el-link></p>
+        <p><span>Tip 4</span>: Consider headlines and images that inform rather than shock or provoke.<el-link type="primary">see more</el-link></p>
       </div>
     </div>
     <div class="actions">
@@ -128,6 +128,10 @@ onMounted(() => {
 
     span {
       font-weight: bold;
+    }
+
+    .el-link {
+      margin-left: 8px;
     }
   }
 }
