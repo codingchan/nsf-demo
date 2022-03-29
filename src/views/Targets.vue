@@ -13,6 +13,7 @@ import {
   followers,
   interests
 } from '@/assets/options.ts'
+import politicalIdeologySelector from '@/components/politicalIdeologySelector.vue'
 
 const emits = defineEmits(['done'])
 
@@ -25,6 +26,8 @@ const deliveryFormData = ref({
   maxBid: '1.05'
 })
 const demographicsFormData = ref({
+  ideology: [],
+  audienceTypes: [],
   gender: 'Any',
   age: 'all',
   ageRange: {
@@ -108,6 +111,16 @@ const targetingKeywords: Ref<string> = ref('')
 
     <el-card header="Demographics">
       <el-form label-position="top" :model="demographicsFormData">
+        <el-form-item label="Political Ideology">
+          <political-ideology-selector v-model="demographicsFormData.ideology" />
+        </el-form-item>
+        <el-form-item label="Audience Types">
+          <el-checkbox-group v-model="demographicsFormData.audienceTypes">
+            <el-checkbox label="Merchants of falsehood" />
+            <el-checkbox label="Spreaders" />
+            <el-checkbox label="Observers" />
+          </el-checkbox-group>
+        </el-form-item>
         <el-form-item label="Gender">
           <el-radio-group v-model="demographicsFormData.gender">
             <el-radio-button label="Any" />
