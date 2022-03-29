@@ -227,22 +227,10 @@ const targetingKeywords: Ref<string> = ref('')
 <style lang="scss" scoped>
 .targets-wrapper{
   padding: 3%;
-  display: flex;
-  flex-direction: column;
 
   .el-card {
     margin-bottom: 20px;
   }
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.options {
-  flex: 1;
-  overflow: auto;
 }
 
 .el-radio.is-bordered {

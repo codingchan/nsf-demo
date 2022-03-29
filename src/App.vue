@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, Ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
+import CampaignDetails from './views/CampaignDetails.vue'
 import Targets from './views/Targets.vue'
 import Welcome from './components/Welcome.vue'
 import Article from './components/Article.vue'
@@ -14,13 +15,14 @@ interface AdType {
 }
 
 const timeline: Ref<any[]> = ref([
+  { key: 'campaign', title: 'Campaign Details' },
   { key: 'targets', title: 'Targets & Buget' },
   { key: 'welcome', title: 'Choose' },
   // { key: 'article', title: 'Article' },
   { key: 'test', title: 'Tweet' },
   { key: 'compare', title: 'Compete!' },
 ])
-const step: Ref<string> = ref('targets')
+const step: Ref<string> = ref('campaign')
 const stepIndex = computed<number>(() => timeline.value.findIndex(ele => ele.key === step.value))
 const adList: Ref<AdType[]> = ref([])
 const editAdIndex: Ref<number> = ref(-1)
@@ -69,6 +71,7 @@ function deleteAd (index: number) {
     </el-timeline>
   </div>
   <div class="app-content">
+    <campaign-details v-show="step === 'campaign'" @done="changeStep('targets')" />
     <Targets v-show="step === 'targets'" @done="changeStep('welcome')" />
     <Welcome v-show="step === 'welcome'" @click="changeStep" />
     <!-- <Article v-show="step === 'article'" @ok="changeStep('test')" /> -->

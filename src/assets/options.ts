@@ -107,4 +107,30 @@ export const interests = [{
     { label: 'Beauty - Spa and medical spa', value: 'beauty-spa-and-medical-spa' },
     { label: 'Beauty - Tanning and sun care', value: 'beauty-tanning-and-sun-care' },
   ]
-}]
+}] // 数据不全
+
+export const objectives = [
+  {
+    name: 'Awareness',
+    children: [
+      { name: 'Reach', value: 'reach', description: 'Maximize your ad’s reach' }
+    ]
+  },
+  {
+    name: 'Consideration',
+    children: [
+      { name: 'Video views', value: 'video', description: 'Get people to watch your video' },
+      { name: 'Pre-roll views', value: 'pre-roll', description: 'Pair your ad with premium content' },
+      { name: 'App installs', value: 'app-installs', description: 'Get people to install your app' },
+      { name: 'Website traffic', value: 'website-traffic', description: 'Drive traffic to your website' },
+      { name: 'Engagements', value: 'engagements', description: 'Get people to engage with your Tweet' },
+      { name: 'Followers', value: 'followers', description: 'Build an audience for your account' }
+    ]
+  },
+  {
+    name: 'Conversion',
+    children: [
+      { name: 'App re-engagements', value: 'app-re-engagements', description: 'Get people to take action in your app' }
+    ]
+  }
+]
