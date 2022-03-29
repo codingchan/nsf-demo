@@ -13,13 +13,13 @@ interface AdType {
 }
 
 const timeline: Ref<any[]> = ref([
-  // { key: 'targets', title: 'Targets & Buget' },
+  { key: 'targets', title: 'Targets & Buget' },
   { key: 'welcome', title: 'Choose' },
   { key: 'article', title: 'Article' },
   { key: 'test', title: 'Tweet' },
   { key: 'compare', title: 'Complete' },
 ])
-const step: Ref<string> = ref('welcome')
+const step: Ref<string> = ref('targets')
 const adList: Ref<AdType[]> = ref([])
 const editAdIndex: Ref<number> = ref(-1)
 
@@ -114,5 +114,7 @@ ul, li {
 
 .app-content {
   flex: 1;
+  height: 100%;
+  overflow: auto;
 }
 </style>
