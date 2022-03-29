@@ -14,7 +14,7 @@ import {
   interests
 } from '@/assets/options.ts'
 
-const emits = defineEmits(['ok'])
+const emits = defineEmits(['done'])
 
 const cascaderProps = { multiple: true }
 const deliveryFormData = ref({
@@ -204,6 +204,10 @@ const targetingKeywords: Ref<string> = ref('')
         </el-form-item>
       </el-form>
     </el-card>
+
+    <div class="next-btn-box">
+      <el-button type="primary" size="large" round @click="emits('done')">Next</el-button>
+    </div>
   </div>
 </template>
 
@@ -282,5 +286,9 @@ h1 {
   .id {
     color: #999;
   }
+}
+
+.next-btn-box {
+  text-align: right;
 }
 </style>
