@@ -111,16 +111,18 @@ const targetingKeywords: Ref<string> = ref('')
 
     <el-card header="Demographics">
       <el-form label-position="top" :model="demographicsFormData">
-        <el-form-item label="Political Ideology">
-          <political-ideology-selector v-model="demographicsFormData.ideology" />
-        </el-form-item>
-        <el-form-item label="Audience Types">
-          <el-checkbox-group v-model="demographicsFormData.audienceTypes">
-            <el-checkbox label="Merchants of falsehood" />
-            <el-checkbox label="Spreaders" />
-            <el-checkbox label="Observers" />
-          </el-checkbox-group>
-        </el-form-item>
+        <div class="standOut">
+          <el-form-item label="Political Ideology">
+            <political-ideology-selector v-model="demographicsFormData.ideology" />
+          </el-form-item>
+          <el-form-item label="Audience Types" style="margin-bottom: 0">
+            <el-checkbox-group v-model="demographicsFormData.audienceTypes">
+              <el-checkbox label="Merchants of falsehood" />
+              <el-checkbox label="Spreaders" />
+              <el-checkbox label="Observers" />
+            </el-checkbox-group>
+          </el-form-item>
+        </div>
         <el-form-item label="Gender">
           <el-radio-group v-model="demographicsFormData.gender">
             <el-radio-button label="Any" />
@@ -256,6 +258,18 @@ const targetingKeywords: Ref<string> = ref('')
   }
   :deep(.el-radio__input.is-checked+.el-radio__label) {
     color: var(--el-radio-text-color);
+  }
+}
+
+.standOut {
+  background-color: #f2f2f2;
+  padding: 15px 15px 5px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+
+  :deep(.el-form-item__label) {
+    font-size: 18px;
+    color: #333;
   }
 }
 

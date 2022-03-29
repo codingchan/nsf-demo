@@ -1,36 +1,117 @@
 <script setup lang="ts">
 import { ref, Ref } from '@vue/reactivity'
-import { nextTick, onMounted } from '@vue/runtime-core'
+import { computed, nextTick, onMounted } from '@vue/runtime-core'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import type Node from 'element-plus/es/components/tree/src/model/node'
+import type { DropType } from 'element-plus/es/components/tree/src/tree.type'
 import TwitterEditor from '@/components/twitterEditor.vue'
 
 interface AdType {
+  id: number
   content: string
   img: string
+  category: string
 }
 
 const props = defineProps(['initAdList', 'actived'])
 const emits = defineEmits(['done'])
 
-const adList: Ref<AdType[]> = ref([{
-  content: '',
-  img: ''
-}])
-const currentAdIndex: Ref<number> = ref(0)
+const categories: Ref<string[]> = ref(['category1'])
+const currentCategory: Ref<string> = ref('category1')
+
+const adList: Ref<AdType[]> = ref([])
+const currentAdId: Ref<number> = ref(0)
+const treeData = computed(() =>
+  categories.value.map(item => {
+    return {
+      label: item,
+      children: adList.value.filter(ele => ele.category === item).map(ele => {
+        return {
+          id: ele.id,
+          label: 'Message ' + ele.id
+        }
+      })
+    }
+  })
+)
+const title = computed<string>(() => {
+  if (currentAdId.value) return 'Message ' + currentAdId.value
+  else return 'New Message'
+})
 const twitterEditor: Ref<any> = ref(null)
 
-function handleChangeTwitterValue (val: AdType) {
-  adList.value[currentAdIndex.value] = val
+function handleClickTreeNode (a, node: Node) {
+  if (node.data.children) currentCategory.value = node.data.label
+  else {
+    currentAdId.value = node.data.id
+    twitterEditor.value.changeEditContent(adList.value.find(ele => ele.id === currentAdId.value))
+  }
 }
-function changeCurrentAdIndex (index: number) {
-  currentAdIndex.value = index
-  twitterEditor.value.changeEditContent(adList.value[index])
+function allowDrop (draggingNode: Node, dropNode: Node, type: DropType) { // 判断目标节点能否成为拖动目标位置
+  if (dropNode.data.children) {
+    return type !== 'prev' && type !== 'next'
+  } else {
+    return false
+  }
 }
-function create () {
-  adList.value.push({
+function allowDrag (node: Node) { // 判断节点时候可被拖动
+  return !node.data.children
+}
+function handleDrop (draggingNode: Node, dropNode: Node) { // 拖拽完成
+  const index = adList.value.findIndex(ele => ele.id === draggingNode.data.id)
+  const target = adList.value[index]
+  Object.assign(target, { category: dropNode.label })
+  adList.value.splice(index, 1, target)
+  currentCategory.value = dropNode.label // 修改当前分类
+}
+
+function addCategory () { // 新增分类
+  categories.value.push('category' + (categories.value.length + 1))
+}
+
+function handleSave (val) {
+  const index = adList.value.findIndex(ele => ele.id === currentAdId.value)
+  if (index > -1) { // 修改
+    const target = adList.value[index]
+    Object.assign(target, val)
+    adList.value.splice(index, 1, target)
+  } else { // 新增
+    const id = adList.value.length > 0 ? (adList.value[adList.value.length - 1].id + 1) : 1
+    adList.value.push({
+      img: val.img,
+      content: val.content,
+      id,
+      category: currentCategory.value
+    })
+    currentAdId.value = id
+  }
+  ElMessage.success('Saved!')
+}
+function addMessage (category: string) {
+  currentCategory.value = category
+  currentAdId.value = 0
+  twitterEditor.value.changeEditContent({
     content: '',
     img: ''
   })
-  changeCurrentAdIndex(adList.value.length - 1)
+}
+
+function changeCategoryName (category: string) { // 修改分类名称
+  ElMessageBox.prompt('Please input category name', '', {
+    inputValue: category,
+  }).then(({ value }) => {
+    adList.value.forEach((item, index) => {
+      if (item.category === category) {
+        item.category = value
+        adList.value.splice(index, 1, item)
+      }
+    })
+    categories.value.splice(categories.value.indexOf(category), 1, value)
+
+    if (currentCategory.value === category) {
+      currentCategory.value = value
+    }
+  }).catch(_ => {})
 }
 
 onMounted(() => {
@@ -39,12 +120,14 @@ onMounted(() => {
   }
 
   if (props.actived > -1) {
-    currentAdIndex.value = props.actived
+    currentAdId.value = props.actived
+    twitterEditor.value.changeEditContent(adList.value.find(ele => ele.id === currentAdId.value))
+  } else {
+    twitterEditor.value.changeEditContent({
+      content: '',
+      img: ''
+    })
   }
-
-  nextTick(() => {
-    twitterEditor.value.changeEditContent(adList.value[currentAdIndex.value])
-  })
 })
 </script>
 
@@ -52,27 +135,40 @@ onMounted(() => {
   <div class="createAds-wrapper">
     <el-card class="articleUrl">
       <p>Article: U.S. Warns China Not to Help Russia in Ukraine</p>
-      <p class="url-text">URL: <a href="https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war">https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war</a></p>
+      <p class="url">URL: <a href="https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war">https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war</a></p>
     </el-card>
 
     <el-row :gutter="30">
       <el-col :span="6">
-        <el-card>
-          <ul>
-            <li
-              v-for="(ad, index) in adList"
-              :key="index"
-              class="adItem"
-              :class="{ actived: currentAdIndex === index }"
-              @click="changeCurrentAdIndex(index)"
-            >Message {{ index + 1 }}</li>
-          </ul>
+        <el-card class="adList-card">
+          <el-button type="primary" plain style="margin-bottom: 10px" @click="addCategory">Add Category</el-button>
+          <el-tree
+            :allow-drop="allowDrop"
+            :allow-drag="allowDrag"
+            :data="treeData"
+            draggable
+            default-expand-all
+            node-key="id"
+            :expand-on-click-node="false"
+            @node-click="handleClickTreeNode"
+            @node-drop="handleDrop"
+          >
+            <template #default="{ node, data }">
+              <span class="tree-item">
+                <span
+                  :class="{ categoryName: data.children ? true : false, actived: data.label === currentCategory || data.id === currentAdId }"
+                  @click.stop="changeCategoryName(data.label)"
+                >{{ node.label }}</span>
+                <el-button v-if="data.children" type="text" @click="addMessage(data.label)">Add Message</el-button>
+              </span>
+            </template>
+          </el-tree>
         </el-card>
       </el-col>
-      <el-col :span="18">
+      <el-col :span="12">
         <div class="adEditor">
-          <h1>Message {{ currentAdIndex + 1 }}</h1>
-          <twitter-editor ref="twitterEditor" @change="handleChangeTwitterValue" @save="create" />
+          <h1>{{ title }}</h1>
+          <twitter-editor ref="twitterEditor" @save="handleSave" />
           <el-card class="tips">
             <p><span>Tip 1:</span> Avoid repeating misinformation. Say what’s true.<el-link type="primary">see more</el-link></p>
             <p><span>Tip 2</span>: Choose your sources wisely. Try to find a credible source that the person respects.<el-link type="primary">see more</el-link></p>
@@ -100,18 +196,45 @@ onMounted(() => {
   line-height: 1.5;
   margin-bottom: 20px;
 
-  .url-text {
+  p {
+    display: inline-block;
+    margin-right: 12px;
+  }
+
+  .url {
+    margin-right: 0;
     word-break: break-all;
   }
 }
 
-.adItem {
-  padding: 10px;
-  cursor: pointer;
+.adList-card {
+  margin-top: 57px;
+  min-height: 500px;
+}
 
-  &.actived,
+.tree-item {
+  flex: 1;
+  display: flex;
+  height: 32px;
+  justify-content: space-between;
+  align-items: center;
+
+  .categoryName {
+    cursor: text;
+  }
+
+  .actived {
+    color: #409eff;
+  }
+
+  .el-button {
+    display: none;
+  }
+
   &:hover {
-    color: #2d8cf0;
+    .el-button {
+      display: block;
+    }
   }
 }
 

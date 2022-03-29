@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, Ref } from '@vue/reactivity'
-import { computed, watch } from '@vue/runtime-core'
+import { computed } from '@vue/runtime-core'
 import { Close } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import DivEditor from './divEditor.vue'
@@ -71,19 +71,12 @@ function selectImage (e: Event) {
     reader.readAsDataURL(file)
   }
 }
-
-watch(editContent, (val: string) => {
-  emits('change', {
-    content: val,
+function onSave () {
+  emits('save', {
+    content: editContent.value,
     img: imgSrc.value
   })
-})
-watch(imgSrc, (val: string) => {
-  emits('change', {
-    content: editContent.value,
-    img: val
-  })
-})
+}
 
 function changeEditContent (val: AdType) {
   editContent.value = val.content
@@ -125,7 +118,7 @@ defineExpose({ changeEditContent })
               <span class="progress-text" :style="{ color: progressContentColor }">{{ progressContent }}</span>
             </div>
             <div v-show="editContent" class="divider"></div>
-            <button class="save-btn" :disabled="editContent === '' && imgSrc === ''" @click="emits('save')">Save</button>
+            <button class="save-btn" :disabled="editContent === '' && imgSrc === ''" @click="onSave">Save</button>
           </div>
         </div>
       </div>

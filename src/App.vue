@@ -10,8 +10,10 @@ import AdList from './components/AdList.vue'
 import Compare from './components/Compare.vue'
 
 interface AdType {
+  id: number
   content: string
   img: string
+  category: string
 }
 
 const timeline: Ref<any[]> = ref([
@@ -22,7 +24,7 @@ const timeline: Ref<any[]> = ref([
   { key: 'test', title: 'Tweet' },
   { key: 'compare', title: 'Compete!' },
 ])
-const step: Ref<string> = ref('campaign')
+const step: Ref<string> = ref('test')
 const stepIndex = computed<number>(() => timeline.value.findIndex(ele => ele.key === step.value))
 const adList: Ref<AdType[]> = ref([])
 const editAdIndex: Ref<number> = ref(-1)
@@ -39,9 +41,6 @@ function handleClickTimeline (enabled: boolean, _step: string) {
 
 function adsEditDone (_adList: AdType[]) {
   adList.value = _adList
-  if (_adList[_adList.length - 1].content === '' && _adList[_adList.length - 1].img === '') {
-    adList.value.pop()
-  }
   changeStep('adList')
 }
 

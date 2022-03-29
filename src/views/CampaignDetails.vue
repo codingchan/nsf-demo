@@ -7,6 +7,7 @@ import {
 const emits = defineEmits(['done'])
 
 const formData = ref({
+  objective: '',
   name: '',
   fundingSource: 'Credit card',
   dailyBudget: '100.00',
@@ -22,7 +23,7 @@ const formData = ref({
     <el-card header="Campaign details">
       <el-form label-position="top" :model="formData">
         <el-form-item label="Objective">
-          <el-select placeholder="Choose your objective" style="width: 100%">
+          <el-select v-model="formData.objective" placeholder="Choose your objective" style="width: 100%">
             <el-option-group
               v-for="group in objectives"
               :key="group.name"
@@ -67,7 +68,7 @@ const formData = ref({
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :xs="24" :sm="12">
             <el-form-item label="Start (optional)">
               <el-date-picker

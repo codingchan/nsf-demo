@@ -3,8 +3,10 @@ import { PropType } from '@vue/runtime-core'
 import { Edit, Delete } from '@element-plus/icons-vue'
 
 interface AdType {
+  id: number
   content: string
   img: string
+  category: string
 }
 
 defineProps({
