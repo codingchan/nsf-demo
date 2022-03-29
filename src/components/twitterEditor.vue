@@ -160,11 +160,12 @@ defineExpose({ changeEditContent })
     position: absolute;
     top: 14px;
     left: 0;
-    z-index: -1;
   }
 
   .editor {
     color: #0f1419;
+    position: relative;
+    z-index: 2;
   }
 
   .upload-img {
