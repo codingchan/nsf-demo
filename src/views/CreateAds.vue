@@ -96,22 +96,25 @@ function addMessage (category: string) {
   })
 }
 
-function changeCategoryName (category: string) { // 修改分类名称
-  ElMessageBox.prompt('Please input category name', '', {
-    inputValue: category,
-  }).then(({ value }) => {
-    adList.value.forEach((item, index) => {
-      if (item.category === category) {
-        item.category = value
-        adList.value.splice(index, 1, item)
-      }
-    })
-    categories.value.splice(categories.value.indexOf(category), 1, value)
+function changeCategoryName (data: any) { // 修改分类名称
+  if (data.children) {
+    const category = data.label
+    ElMessageBox.prompt('Please input category name', '', {
+      inputValue: category,
+    }).then(({ value }) => {
+      adList.value.forEach((item, index) => {
+        if (item.category === category) {
+          item.category = value
+          adList.value.splice(index, 1, item)
+        }
+      })
+      categories.value.splice(categories.value.indexOf(category), 1, value)
 
-    if (currentCategory.value === category) {
-      currentCategory.value = value
-    }
-  }).catch(_ => {})
+      if (currentCategory.value === category) {
+        currentCategory.value = value
+      }
+    }).catch(_ => {})
+  }
 }
 
 onMounted(() => {
@@ -157,7 +160,7 @@ onMounted(() => {
               <span class="tree-item">
                 <span
                   :class="{ categoryName: data.children ? true : false, actived: data.label === currentCategory || data.id === currentAdId }"
-                  @click.stop="changeCategoryName(data.label)"
+                  @click.stop="changeCategoryName(data)"
                 >{{ node.label }}</span>
                 <el-button v-if="data.children" type="text" @click="addMessage(data.label)">Add Message</el-button>
               </span>
