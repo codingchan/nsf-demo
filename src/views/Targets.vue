@@ -60,7 +60,7 @@ const targetingKeywords: Ref<string> = ref('')
 
 <template>
   <div class="targets-wrapper">
-    <el-card header="Delivery">
+    <!-- <el-card header="Delivery">
       <el-form label-position="top" :model="deliveryFormData">
         <el-form-item label="Total ad group budget (optional)">
           <el-input v-model="deliveryFormData.totalBudget" placeholder="0.00">
@@ -107,7 +107,7 @@ const targetingKeywords: Ref<string> = ref('')
           </el-radio>
         </el-form-item>
       </el-form>
-    </el-card>
+    </el-card> -->
 
     <el-card header="Demographics">
       <el-form label-position="top" :model="demographicsFormData">
@@ -130,7 +130,7 @@ const targetingKeywords: Ref<string> = ref('')
             <el-radio-button label="Men" />
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="Age">
+        <!-- <el-form-item label="Age">
           <el-radio-group v-model="demographicsFormData.age">
             <el-radio label="all">All</el-radio>
             <el-radio label="range">Age range</el-radio>
@@ -144,19 +144,19 @@ const targetingKeywords: Ref<string> = ref('')
               <el-option v-for="item in ageMaxList" :key="item" :label="item" :value="item" />
             </el-select>
           </span>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="Location (optional)">
           <el-input v-model="demographicsFormData.location" />
         </el-form-item>
-        <el-form-item label="Language (optional)">
+        <!-- <el-form-item label="Language (optional)">
           <el-select v-model="demographicsFormData.language" clearable multiple style="width: 100%">
             <el-option v-for="item in languages" :key="item" :label="item" :value="item" />
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
     </el-card>
 
-    <el-card header="Devices">
+    <!-- <el-card header="Devices">
       <el-form label-position="top" :model="devicesFormData">
         <el-form-item label="Operating System">
           <el-checkbox-group v-model="devicesFormData.os" style="width: 100%">
@@ -218,7 +218,7 @@ const targetingKeywords: Ref<string> = ref('')
           <el-cascader v-model="targetingFormData.interests" :options="interests" :props="cascaderProps" style="width: 100%" />
         </el-form-item>
       </el-form>
-    </el-card>
+    </el-card> -->
 
     <div class="next-btn-box">
       <el-button type="primary" size="large" round @click="emits('done')">Next</el-button>

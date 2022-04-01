@@ -136,10 +136,10 @@ onMounted(() => {
 
 <template>
   <div class="createAds-wrapper">
-    <el-card class="articleUrl">
+    <!-- <el-card class="articleUrl">
       <p>Article: U.S. Warns China Not to Help Russia in Ukraine</p>
       <p class="url">URL: <a href="https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war">https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war</a></p>
-    </el-card>
+    </el-card> -->
 
     <el-row :gutter="30">
       <el-col :span="6">

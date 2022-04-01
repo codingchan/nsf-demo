@@ -19,12 +19,12 @@ interface AdType {
 const timeline: Ref<any[]> = ref([
   { key: 'campaign', title: 'Campaign Details' },
   { key: 'targets', title: 'Targets & Buget' },
-  { key: 'welcome', title: 'Choose' },
+  // { key: 'welcome', title: 'Choose' },
   // { key: 'article', title: 'Article' },
   { key: 'test', title: 'Tweet' },
   { key: 'compare', title: 'Compete!' },
 ])
-const step: Ref<string> = ref('test')
+const step: Ref<string> = ref('campaign')
 const stepIndex = computed<number>(() => timeline.value.findIndex(ele => ele.key === step.value))
 const adList: Ref<AdType[]> = ref([])
 const editAdIndex: Ref<number> = ref(-1)
@@ -71,8 +71,8 @@ function deleteAd (index: number) {
   </div>
   <div class="app-content">
     <campaign-details v-show="step === 'campaign'" @done="changeStep('targets')" />
-    <Targets v-show="step === 'targets'" @done="changeStep('welcome')" />
-    <Welcome v-show="step === 'welcome'" @click="changeStep" />
+    <Targets v-show="step === 'targets'" @done="changeStep('test')" />
+    <!-- <Welcome v-show="step === 'welcome'" @click="changeStep" /> -->
     <!-- <Article v-show="step === 'article'" @ok="changeStep('test')" /> -->
     <Test v-show="step === 'test'" :init-ad-list="adList" :actived="editAdIndex" @done="adsEditDone" />
     <ad-list
