@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, Ref } from '@vue/reactivity'
-import BarChart from './barChart.vue'
-import ScatterChart from './scatterChart.vue'
+import BarChart from './components/barChart.vue'
+import ScatterChart from './components/scatterChart.vue'
 
 const showBarChart: Ref<boolean> = ref(false)
 const showScatterChart: Ref<boolean> = ref(false)
 </script>
 
 <template>
-  <div class="compare-wrapper">
+  <div class="compete-wrapper">
     <div v-if="!showBarChart && !showScatterChart" class="metrics">
       <h1>Who is the winner?</h1>
       <h3>[ Select your metric ]</h3>
@@ -25,7 +25,7 @@ const showScatterChart: Ref<boolean> = ref(false)
 </template>
 
 <style lang="scss" scoped>
-.compare-wrapper {
+.compete-wrapper {
   height: 100%;
   width: 90%;
   margin: 0 auto;

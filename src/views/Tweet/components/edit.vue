@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, Ref } from '@vue/reactivity'
-import { computed, nextTick, onMounted } from '@vue/runtime-core'
+import { computed, nextTick, PropType, watch } from '@vue/runtime-core'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import type { DropType } from 'element-plus/es/components/tree/src/tree.type'
@@ -13,29 +13,32 @@ interface AdType {
   category: string
 }
 
-const props = defineProps(['initAdList', 'actived'])
-const emits = defineEmits(['done'])
+const props = defineProps({
+  adList: {
+    type: Array as PropType<AdType[]>,
+    required: true
+  },
+  activedAdId: {
+    type: Number,
+    required: true
+  },
+  treeData: {
+    type: Array,
+    required: true
+  }
+})
+const emits = defineEmits([
+  'addCategory',
+  'changeCategoryName',
+  'addAd',
+  'changeAd',
+  'changeActivedAdId',
+  'done'
+])
 
-const categories: Ref<string[]> = ref(['category1'])
-const currentCategory: Ref<string> = ref('category1')
-
-const adList: Ref<AdType[]> = ref([])
-const currentAdId: Ref<number> = ref(0)
-const treeData = computed(() =>
-  categories.value.map(item => {
-    return {
-      label: item,
-      children: adList.value.filter(ele => ele.category === item).map(ele => {
-        return {
-          id: ele.id,
-          label: 'Message ' + ele.id
-        }
-      })
-    }
-  })
-)
+const currentCategory: Ref<string> = ref('category1') // 当前选中的分类
 const title = computed<string>(() => {
-  if (currentAdId.value) return 'Message ' + currentAdId.value
+  if (props.activedAdId) return 'Message ' + props.activedAdId
   else return 'New Message'
 })
 const twitterEditor: Ref<any> = ref(null)
@@ -43,8 +46,7 @@ const twitterEditor: Ref<any> = ref(null)
 function handleClickTreeNode (a, node: Node) {
   if (node.data.children) currentCategory.value = node.data.label
   else {
-    currentAdId.value = node.data.id
-    twitterEditor.value.changeEditContent(adList.value.find(ele => ele.id === currentAdId.value))
+    emits('changeActivedAdId', node.data.id)
   }
 }
 function allowDrop (draggingNode: Node, dropNode: Node, type: DropType) { // 判断目标节点能否成为拖动目标位置
@@ -58,79 +60,72 @@ function allowDrag (node: Node) { // 判断节点时候可被拖动
   return !node.data.children
 }
 function handleDrop (draggingNode: Node, dropNode: Node) { // 拖拽完成
-  const index = adList.value.findIndex(ele => ele.id === draggingNode.data.id)
-  const target = adList.value[index]
-  Object.assign(target, { category: dropNode.label })
-  adList.value.splice(index, 1, target)
+  emits('changeAd', {
+    id: draggingNode.data.id,
+    newData: { category: dropNode.label }
+  })
+
   currentCategory.value = dropNode.label // 修改当前分类
 }
 
-function addCategory () { // 新增分类
-  categories.value.push('category' + (categories.value.length + 1))
-}
-
 function handleSave (val) {
-  const index = adList.value.findIndex(ele => ele.id === currentAdId.value)
+  const index = props.adList.findIndex(ele => ele.id === props.activedAdId)
   if (index > -1) { // 修改
-    const target = adList.value[index]
-    Object.assign(target, val)
-    adList.value.splice(index, 1, target)
+    emits('changeAd', {
+      id: props.activedAdId,
+      newData: val
+    })
   } else { // 新增
-    const id = adList.value.length > 0 ? (adList.value[adList.value.length - 1].id + 1) : 1
-    adList.value.push({
+    const id = props.adList.length > 0 ? (props.adList[props.adList.length - 1].id + 1) : 1
+    emits('addAd', {
       img: val.img,
       content: val.content,
       id,
       category: currentCategory.value
     })
-    currentAdId.value = id
+    emits('changeActivedAdId', id)
   }
   ElMessage.success('Saved!')
 }
 function addMessage (category: string) {
   currentCategory.value = category
-  currentAdId.value = 0
-  twitterEditor.value.changeEditContent({
-    content: '',
-    img: ''
-  })
+  emits('changeActivedAdId', 0)
 }
 
-function changeCategoryName (data: any) { // 修改分类名称
-  if (data.children) {
+function handleClickName (data: any) {
+  if (data.children) { // 修改分类名称
     const category = data.label
     ElMessageBox.prompt('Please input category name', '', {
       inputValue: category,
     }).then(({ value }) => {
-      adList.value.forEach((item, index) => {
-        if (item.category === category) {
-          item.category = value
-          adList.value.splice(index, 1, item)
-        }
-      })
-      categories.value.splice(categories.value.indexOf(category), 1, value)
+      if (value !== category) {
+        emits('changeCategoryName', {
+          old: category,
+          newName: value
+        })
 
-      if (currentCategory.value === category) {
-        currentCategory.value = value
+        if (currentCategory.value === category) {
+          currentCategory.value = value
+        }
       }
     }).catch(_ => {})
   }
 }
 
-onMounted(() => {
-  if (props.initAdList.length > 0) {
-    adList.value = props.initAdList
-  }
-
-  if (props.actived > -1) {
-    currentAdId.value = props.actived
-    twitterEditor.value.changeEditContent(adList.value.find(ele => ele.id === currentAdId.value))
-  } else {
-    twitterEditor.value.changeEditContent({
-      content: '',
-      img: ''
-    })
-  }
+watch(() => props.activedAdId, (val: number) => {
+  const index = props.adList.findIndex(ele => ele.id === val)
+  nextTick(() => {
+    if (index > -1) {
+      twitterEditor.value.changeEditContent(props.adList[index])
+    } else {
+      twitterEditor.value.changeEditContent({
+        content: '',
+        img: ''
+      })
+    }
+  })
+}, {
+  immediate: true
 })
 </script>
 
@@ -144,7 +139,7 @@ onMounted(() => {
     <el-row :gutter="30">
       <el-col :span="6">
         <el-card class="adList-card">
-          <el-button type="primary" plain style="margin-bottom: 10px" @click="addCategory">Add Category</el-button>
+          <el-button type="primary" plain style="margin-bottom: 10px" @click="emits('addCategory')">Add Category</el-button>
           <el-tree
             :allow-drop="allowDrop"
             :allow-drag="allowDrag"
@@ -159,8 +154,8 @@ onMounted(() => {
             <template #default="{ node, data }">
               <span class="tree-item">
                 <span
-                  :class="{ categoryName: data.children ? true : false, actived: data.label === currentCategory || data.id === currentAdId }"
-                  @click.stop="changeCategoryName(data)"
+                  :class="{ categoryName: data.children ? true : false, actived: data.label === currentCategory || data.id === activedAdId }"
+                  @click="handleClickName(data)"
                 >{{ node.label }}</span>
                 <el-button v-if="data.children" type="text" @click="addMessage(data.label)">Add Message</el-button>
               </span>

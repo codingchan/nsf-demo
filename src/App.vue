@@ -2,32 +2,22 @@
 import { ref, Ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
 import CampaignDetails from './views/CampaignDetails.vue'
-import Targets from './views/Targets.vue'
+import TargetsAndBuget from './views/Targets&Buget.vue'
 import Welcome from './components/Welcome.vue'
 import Article from './components/Article.vue'
-import Test from './views/CreateAds.vue'
-import AdList from './components/AdList.vue'
-import Compare from './components/Compare.vue'
-
-interface AdType {
-  id: number
-  content: string
-  img: string
-  category: string
-}
+import Tweet from './views/Tweet/Index.vue'
+import Compete from './views/Compete/Index.vue'
 
 const timeline: Ref<any[]> = ref([
   { key: 'campaign', title: 'Campaign Details' },
   { key: 'targets', title: 'Targets & Buget' },
   // { key: 'welcome', title: 'Choose' },
   // { key: 'article', title: 'Article' },
-  { key: 'test', title: 'Tweet' },
-  { key: 'compare', title: 'Compete!' },
+  { key: 'tweet', title: 'Tweet' },
+  { key: 'compete', title: 'Compete!' },
 ])
 const step: Ref<string> = ref('campaign')
 const stepIndex = computed<number>(() => timeline.value.findIndex(ele => ele.key === step.value))
-const adList: Ref<AdType[]> = ref([])
-const editAdIndex: Ref<number> = ref(-1)
 
 function changeStep (_step: string) {
   step.value = _step
@@ -38,19 +28,6 @@ function handleClickTimeline (enabled: boolean, _step: string) {
     changeStep(_step)
   }
 }
-
-function adsEditDone (_adList: AdType[]) {
-  adList.value = _adList
-  changeStep('adList')
-}
-
-function editAd (index: number) {
-  editAdIndex.value = index
-  changeStep('test')
-}
-function deleteAd (index: number) {
-  adList.value.splice(index, 1)
-} 
 </script>
 
 <template>
@@ -71,18 +48,11 @@ function deleteAd (index: number) {
   </div>
   <div class="app-content">
     <campaign-details v-show="step === 'campaign'" @done="changeStep('targets')" />
-    <Targets v-show="step === 'targets'" @done="changeStep('test')" />
+    <targets-and-buget v-show="step === 'targets'" @done="changeStep('tweet')" />
     <!-- <Welcome v-show="step === 'welcome'" @click="changeStep" /> -->
-    <!-- <Article v-show="step === 'article'" @ok="changeStep('test')" /> -->
-    <Test v-show="step === 'test'" :init-ad-list="adList" :actived="editAdIndex" @done="adsEditDone" />
-    <ad-list
-      v-show="step === 'adList'"
-      :ad-list="adList"
-      @edit="editAd"
-      @delete="deleteAd"
-      @upload="changeStep('compare')"
-    />
-    <Compare v-show="step === 'compare'" />
+    <!-- <Article v-show="step === 'article'" @ok="changeStep('tweet')" /> -->
+    <Tweet v-show="step === 'tweet'" @done="changeStep('compete')" />
+    <Compete v-if="step === 'compete'" />
   </div>
 </template>
 
