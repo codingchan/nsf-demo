@@ -13,6 +13,7 @@ import {
   DataZoomComponent
 } from 'echarts/components'
 import VChart from 'vue-echarts'
+import { getBeforeDate, chartColor } from '@/assets/public.ts'
 
 use([
   CanvasRenderer,
@@ -25,16 +26,7 @@ use([
 
 type EChartsOption = echarts.EChartsOption
 
-function getBeforeDate (n: number) { // 获取今天前第n天的日期
-  const date = new Date()
-  const month: number = date.getMonth() + 1
-  date.setDate(date.getDate() - n)
-  let day: number = date.getDate()
-  return (month < 10 ? ('0' + month) : month) + '-' + (day < 10 ? ('0' + day) : day)
-}
-
 const updateFrequency: number = 3000
-const colors: string[] = ['#ead7bb', '#5d7599', '#abb6c8', '#9fcaa3', '#e78764', '#e1d839']
 
 // 原始数据
 const numberRaw: Array<number[]> = [
@@ -88,7 +80,7 @@ const chartOption: Ref<EChartsOption> = ref({
     right: 100,
     containLabel: true
   },
-  color: colors,
+  color: chartColor,
   tooltip: {
     formatter: ({ data }) => `
       <b>${ data.title }</b><br/>

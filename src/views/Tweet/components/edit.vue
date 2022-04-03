@@ -4,14 +4,8 @@ import { computed, nextTick, PropType, watch } from '@vue/runtime-core'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import type { DropType } from 'element-plus/es/components/tree/src/tree.type'
+import { AdType } from '@/assets/public.ts'
 import TwitterEditor from '@/components/twitterEditor.vue'
-
-interface AdType {
-  id: number
-  content: string
-  img: string
-  category: string
-}
 
 const props = defineProps({
   adList: {

@@ -16,7 +16,7 @@ const timeline: Ref<any[]> = ref([
   { key: 'tweet', title: 'Tweet' },
   { key: 'compete', title: 'Compete!' },
 ])
-const step: Ref<string> = ref('campaign')
+const step: Ref<string> = ref('compete')
 const stepIndex = computed<number>(() => timeline.value.findIndex(ele => ele.key === step.value))
 
 function changeStep (_step: string) {
@@ -27,6 +27,12 @@ function handleClickTimeline (enabled: boolean, _step: string) {
   if (enabled) {
     changeStep(_step)
   }
+}
+
+const tweets = ref({})
+function editTweetDone (data) {
+  tweets.value = data
+  changeStep('compete')
 }
 </script>
 
@@ -51,8 +57,8 @@ function handleClickTimeline (enabled: boolean, _step: string) {
     <targets-and-buget v-show="step === 'targets'" @done="changeStep('tweet')" />
     <!-- <Welcome v-show="step === 'welcome'" @click="changeStep" /> -->
     <!-- <Article v-show="step === 'article'" @ok="changeStep('tweet')" /> -->
-    <Tweet v-show="step === 'tweet'" @done="changeStep('compete')" />
-    <Compete v-if="step === 'compete'" />
+    <Tweet v-show="step === 'tweet'" @done="editTweetDone" />
+    <Compete :data="tweets" v-if="step === 'compete'" />
   </div>
 </template>
 

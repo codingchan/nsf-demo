@@ -1,17 +1,11 @@
 <script lang="ts" setup>
 import { ref, Ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
+import { AdType } from '@/assets/public.ts'
 import Edit from './components/edit.vue'
 import List from './components/list.vue'
 
 const emits = defineEmits(['done'])
-
-interface AdType {
-  id: number
-  content: string
-  img: string
-  category: string
-}
 
 const editing: Ref<boolean> = ref(true)
  
@@ -66,6 +60,13 @@ const treeData = computed(() =>
     }
   })
 )
+
+function done () {
+  emits('done', {
+    categories: categories.value,
+    tweets: adList.value
+  })
+}
 </script>
 
 <template>
@@ -88,6 +89,6 @@ const treeData = computed(() =>
     @edit="editAd"
     @delete="deleteAd"
     @back="editing = true"
-    @done="emits('done')"
+    @done="done"
   />
 </template>

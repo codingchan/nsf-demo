@@ -1,13 +1,7 @@
 <script setup lang="ts">
 import { PropType } from '@vue/runtime-core'
 import { Edit, Delete } from '@element-plus/icons-vue'
-
-interface AdType {
-  id: number
-  content: string
-  img: string
-  category: string
-}
+import { AdType } from '@/assets/public.ts'
 
 defineProps({
   treeData: {

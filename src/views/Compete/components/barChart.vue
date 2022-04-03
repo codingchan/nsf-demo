@@ -10,6 +10,8 @@ import {
   GraphicComponent
 } from 'echarts/components'
 import VChart from 'vue-echarts'
+import Mock from 'mockjs'
+import { getBeforeDate, chartColor } from '@/assets/public.ts'
 
 use([
   CanvasRenderer,
@@ -19,36 +21,40 @@ use([
 ])
 
 type EChartsOption = echarts.EChartsOption
+type CallbackDataParams = echarts.DefaultLabelFormatterCallbackParams
 
-function getBeforeDate (n: number) { // 获取今天前第n天的日期
-  const date = new Date()
-  const month: number = date.getMonth() + 1
-  date.setDate(date.getDate() - n)
-  let day: number = date.getDate()
-  return (month < 10 ? ('0' + month) : month) + '-' + (day < 10 ? ('0' + day) : day)
-}
+const props = defineProps({
+  isStatic: {
+    type: Boolean,
+    required: true
+  },
+  data: {
+    type: Array,
+    required: true
+  },
+  dataSource: {
+    type: String,
+    required: true
+  }
+})
+const emits = defineEmits(['click'])
 
 const updateFrequency: number = 6000
-const tweetNumber: number = 4 // tweet数量
 const dayNumber: number = 10 // 天数
-const colors: string[] = ['#ead7bb', '#5d7599', '#abb6c8', '#9fcaa3', '#e78764', '#e1d839']
 
 const days: string[] = [] // 显示日期
 for (let i: number = dayNumber - 1; i >= 0; i--) {
   days.push(getBeforeDate(i))
 }
 
-const raw: Array<number[]> = [] // 原始数据
+const Random = Mock.Random
+const raw: Array<number[]> = [] // 模拟数据
 for (let i: number = 0; i < dayNumber; i++) {
   raw.push([])
-  for (let j: number = 0;j < tweetNumber; j++) {
-    raw[i].push(Math.round(Math.random() * 100) + i * 100)
+  for (let j: number = 0;j < props.data.length; j++) {
+    // raw[i].push(Math.round(Math.random() * 100) + i * 100)
+    raw[i].push(Random.integer(i === 0 ? 0 : raw[i - 1][j], (i + 1) * 100))
   }
-}
-
-const tweets: string[] = [] // 纵坐标data
-for (let i: number = 1; i <= tweetNumber; i++) {
-  tweets.push('tweet ' + i)
 }
 
 const chartOption: Ref<EChartsOption> = ref({
@@ -59,7 +65,7 @@ const chartOption: Ref<EChartsOption> = ref({
     right: 30,
     containLabel: true
   },
-  color: colors,
+  color: chartColor,
   xAxis: {
     type: 'value'
   },
@@ -76,9 +82,7 @@ const chartOption: Ref<EChartsOption> = ref({
         }
       }
     },
-    data: tweets,
-    animationDuration: 300,
-    animationDurationUpdate: 300
+    data: props.data
   },
   series: [{
     realtimeSort: true,
@@ -89,14 +93,9 @@ const chartOption: Ref<EChartsOption> = ref({
     label: {
       show: true,
       position: 'right',
-      valueAnimation: true,
       fontFamily: 'monospace'
     }
   }],
-  animationDuration: updateFrequency,
-  animationDurationUpdate: updateFrequency,
-  animationEasing: 'linear',
-  animationEasingUpdate: 'linear',
   graphic: {
     elements: [
       {
@@ -113,26 +112,50 @@ const chartOption: Ref<EChartsOption> = ref({
   }
 })
 
-let timer: any = null
-onMounted(() => {
-  let index = 0
-  function update () {
-    chartOption.value.series[0].data = raw[index]
-    chartOption.value.graphic.elements[0].style.text = days[index]
+if (props.isStatic) { // 静态
+  chartOption.value.series[0].data = raw[dayNumber - 1]
+  chartOption.value.graphic.elements[0].style.text = days[dayNumber - 1]
+} else { // 动态
+  Object.assign(chartOption.value.series[0].label, { valueAnimation: true })
+  Object.assign(chartOption.value.yAxis, {
+    animationDuration: 300,
+    animationDurationUpdate: 300
+  })
+  Object.assign(chartOption.value, {
+    animationDuration: updateFrequency,
+    animationDurationUpdate: updateFrequency,
+    animationEasing: 'linear',
+    animationEasingUpdate: 'linear'
+  })
+  
+  let timer: any = null
+  onMounted(() => {
+    let index = 0
+    function update () {
+      chartOption.value.series[0].data = raw[index]
+      chartOption.value.graphic.elements[0].style.text = days[index]
 
-    if (index < dayNumber - 1) index++
-    else clearInterval(timer)
+      if (index < dayNumber - 1) index++
+      else clearInterval(timer)
+    }
+    update()
+    timer = setInterval(update, updateFrequency)
+  })
+  onBeforeUnmount(() => {
+    if (timer) clearInterval(timer)
+  })
+}
+
+function handleClickChart (params: CallbackDataParams) {
+  if (props.dataSource === 'category' && params.componentType === 'series') {
+    emits('click', {
+      type: 'bar',
+      category: params.name
+    })
   }
-  update()
-  timer = setInterval(update, updateFrequency)
-})
-onBeforeUnmount(() => {
-  if (timer) {
-    clearInterval(timer)
-  }
-})
+}
 </script>
 
 <template>
-  <v-chart :option="chartOption" />
+  <v-chart :option="chartOption" @click="handleClickChart" />
 </template>

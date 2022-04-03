@@ -4,6 +4,7 @@ import { computed } from '@vue/runtime-core'
 import { Close } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import DivEditor from './divEditor.vue'
+import { AdType } from '@/assets/public.ts'
 
 // 获取字符串字节数
 function getStringByteLength (val: string) {
@@ -18,11 +19,6 @@ function getStringByteLength (val: string) {
     }
   }
   return bytesCount
-}
-
-interface AdType {
-  content: string
-  img: string
 }
 
 const emits = defineEmits(['change', 'save'])
