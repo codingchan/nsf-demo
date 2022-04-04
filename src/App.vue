@@ -16,7 +16,7 @@ const timeline: Ref<any[]> = ref([
   { key: 'tweet', title: 'Tweet' },
   { key: 'compete', title: 'Compete!' },
 ])
-const step: Ref<string> = ref('compete')
+const step: Ref<string> = ref('campaign')
 const stepIndex = computed<number>(() => timeline.value.findIndex(ele => ele.key === step.value))
 
 function changeStep (_step: string) {

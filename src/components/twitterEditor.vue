@@ -92,7 +92,7 @@ defineExpose({ changeEditContent })
         </div>
         <div v-show="imgSrc" class="upload-img">
           <img :src="imgSrc" />
-          <button><el-icon><Close /></el-icon></button>
+          <button @click="imgSrc = ''"><el-icon><Close /></el-icon></button>
         </div>
         <div class="twitter-toolbar">
           <button class="action-btn" @click="imageInput.click()">
