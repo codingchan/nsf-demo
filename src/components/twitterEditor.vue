@@ -57,7 +57,6 @@ const imgSrc: Ref<string> = ref('')
 function selectImage (e: Event) {
   const file = e.target.files[0]
   if (file.type.substring(0, 5) !== 'image') {
-    e.target.value = ''
     ElMessage.error('Please choose a image file.')
   } else {
     const reader = new FileReader()
@@ -66,6 +65,7 @@ function selectImage (e: Event) {
     }
     reader.readAsDataURL(file)
   }
+  e.target.value = ''
 }
 function onSave () {
   emits('save', {
@@ -158,13 +158,12 @@ defineExpose({ changeEditContent })
   }
 
   .upload-img {
-    max-width: 100%;
-    max-height: 400px;
+    width: 100%;
     position: relative;
 
     img {
       max-width: 100%;
-      max-height: 100%;
+      max-height: 400px;
     }
 
     button {
