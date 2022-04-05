@@ -20,7 +20,7 @@ const formData = ref({
 
 <template>
   <div class="campaignDetails-wrapper">
-    <el-card header="Campaign details">
+    <el-card header="Your Course Correct Trial">
       <el-form label-position="top" :model="formData">
         <el-form-item label="Objective">
           <el-select v-model="formData.objective" placeholder="Choose your objective" style="width: 100%">
@@ -39,7 +39,7 @@ const formData = ref({
             </el-option-group>
           </el-select>
         </el-form-item>
-        <el-form-item label="Campaign name (optional)">
+        <el-form-item label="Your Trial Name (optional)">
           <el-input
             v-model="formData.name"
             maxlength="255"

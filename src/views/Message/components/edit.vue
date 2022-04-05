@@ -81,10 +81,6 @@ function handleSave (val) {
   }
   ElMessage.success('Saved!')
 }
-function addMessage (category: string) {
-  currentCategory.value = category
-  emits('changeActivedAdId', 0)
-}
 
 function handleClickName (data: any) {
   if (data.children) { // 修改分类名称
@@ -133,7 +129,10 @@ watch(() => props.activedAdId, (val: number) => {
     <el-row :gutter="30">
       <el-col :span="6">
         <el-card class="adList-card">
-          <el-button type="primary" plain style="margin-bottom: 10px" @click="emits('addCategory')">Add Category</el-button>
+          <div style="margin-bottom: 10px">
+            <el-button type="primary" plain @click="emits('addCategory')">Add Category</el-button>
+            <el-button type="primary" plain @click="emits('changeActivedAdId', 0)">Add Message</el-button>
+          </div>
           <el-tree
             :allow-drop="allowDrop"
             :allow-drag="allowDrag"
@@ -151,7 +150,6 @@ watch(() => props.activedAdId, (val: number) => {
                   :class="{ categoryName: data.children ? true : false, actived: data.label === currentCategory || data.id === activedAdId }"
                   @click="handleClickName(data)"
                 >{{ node.label }}</span>
-                <el-button v-if="data.children" type="text" @click="addMessage(data.label)">Add Message</el-button>
               </span>
             </template>
           </el-tree>

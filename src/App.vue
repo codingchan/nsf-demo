@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { ref, Ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
-import CampaignDetails from './views/CampaignDetails.vue'
-import TargetsAndBuget from './views/Targets&Buget.vue'
+import Trial from './views/Trial.vue'
+import AudienceAndBuget from './views/Audience&Buget.vue'
 import Welcome from './components/Welcome.vue'
 import Article from './components/Article.vue'
-import Tweet from './views/Tweet/Index.vue'
+import Message from './views/Message/Index.vue'
 import Compete from './views/Compete/Index.vue'
 
 const timeline: Ref<any[]> = ref([
-  { key: 'campaign', title: 'Campaign Details' },
-  { key: 'targets', title: 'Targets & Buget' },
+  { key: 'trial', title: 'Your Course Correct Trial' },
+  { key: 'audience', title: 'Audience & Budget' },
   // { key: 'welcome', title: 'Choose' },
   // { key: 'article', title: 'Article' },
-  { key: 'tweet', title: 'Tweet' },
+  { key: 'message', title: 'Message Studio' },
   { key: 'compete', title: 'Compete!' },
 ])
-const step: Ref<string> = ref('campaign')
+const step: Ref<string> = ref('trial')
 const stepIndex = computed<number>(() => timeline.value.findIndex(ele => ele.key === step.value))
 
 function changeStep (_step: string) {
@@ -53,11 +53,11 @@ function editTweetDone (data) {
     </el-timeline>
   </div>
   <div class="app-content">
-    <campaign-details v-show="step === 'campaign'" @done="changeStep('targets')" />
-    <targets-and-buget v-show="step === 'targets'" @done="changeStep('tweet')" />
+    <Trial v-show="step === 'trial'" @done="changeStep('audience')" />
+    <audience-and-buget v-show="step === 'audience'" @done="changeStep('message')" />
     <!-- <Welcome v-show="step === 'welcome'" @click="changeStep" /> -->
-    <!-- <Article v-show="step === 'article'" @ok="changeStep('tweet')" /> -->
-    <Tweet v-show="step === 'tweet'" @done="editTweetDone" />
+    <!-- <Article v-show="step === 'article'" @ok="changeStep('message')" /> -->
+    <Message v-show="step === 'message'" @done="editTweetDone" />
     <Compete :data="tweets" v-if="step === 'compete'" />
   </div>
 </template>

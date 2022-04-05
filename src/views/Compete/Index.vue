@@ -22,7 +22,7 @@ function viewChart (type: string, isStatic: boolean, category?: string) {
     chartData.value = props.data.tweets
       .filter((ele: AdType) => ele.category === category)
       .map((ele: AdType) => 'Message ' + ele.id)
-    chartDataSource.value = 'tweet'
+    chartDataSource.value = 'message'
   } else {
     chartData.value = props.data.categories
     chartDataSource.value = 'category'

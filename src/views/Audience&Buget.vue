@@ -109,17 +109,17 @@ const targetingKeywords: Ref<string> = ref('')
       </el-form>
     </el-card> -->
 
-    <el-card header="Demographics">
+    <el-card header="Audience characteristics">
       <el-form label-position="top" :model="demographicsFormData">
         <div class="standOut">
           <el-form-item label="Political Ideology">
             <political-ideology-selector v-model="demographicsFormData.ideology" />
           </el-form-item>
           <el-form-item label="Audience Types" style="margin-bottom: 0">
-            <el-checkbox-group v-model="demographicsFormData.audienceTypes">
-              <el-checkbox label="Merchants of falsehood" />
-              <el-checkbox label="Spreaders" />
-              <el-checkbox label="Observers" />
+            <el-checkbox-group v-model="demographicsFormData.audienceTypes" class="audienceTypes-checkbox">
+              <el-checkbox label="Misinformation producers" size="large" border />
+              <el-checkbox label="Spreaders" size="large" border />
+              <el-checkbox label="Observers" size="large" border />
             </el-checkbox-group>
           </el-form-item>
         </div>
@@ -270,6 +270,18 @@ const targetingKeywords: Ref<string> = ref('')
   :deep(.el-form-item__label) {
     font-size: 18px;
     color: #333;
+  }
+}
+
+.audienceTypes-checkbox {
+  .el-checkbox {
+    display: flex;
+    margin-bottom: 10px;
+    margin-right: 0;
+
+    &.is-bordered.el-checkbox--large {
+      padding: 0 12px;
+    }
   }
 }
 
