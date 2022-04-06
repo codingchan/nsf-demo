@@ -121,85 +121,67 @@ watch(() => props.activedAdId, (val: number) => {
 
 <template>
   <div class="createAds-wrapper">
-    <!-- <el-card class="articleUrl">
-      <p>Article: U.S. Warns China Not to Help Russia in Ukraine</p>
-      <p class="url">URL: <a href="https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war">https://www.nytimes.com/live/2022/03/14/world/ukraine-russia-war</a></p>
-    </el-card> -->
-
-    <el-row :gutter="30">
-      <el-col :span="6">
-        <el-card class="adList-card">
-          <div style="margin-bottom: 10px">
-            <el-button type="primary" plain @click="emits('addCategory')">Add Category</el-button>
-            <el-button type="primary" plain @click="emits('changeActivedAdId', 0)">Add Message</el-button>
-          </div>
-          <el-tree
-            :allow-drop="allowDrop"
-            :allow-drag="allowDrag"
-            :data="treeData"
-            draggable
-            default-expand-all
-            node-key="id"
-            :expand-on-click-node="false"
-            @node-click="handleClickTreeNode"
-            @node-drop="handleDrop"
-          >
-            <template #default="{ node, data }">
-              <span class="tree-item">
-                <span
-                  :class="{ categoryName: data.children ? true : false, actived: data.label === currentCategory || data.id === activedAdId }"
-                  @click="handleClickName(data)"
-                >{{ node.label }}</span>
-              </span>
-            </template>
-          </el-tree>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <div class="adEditor">
-          <h1>{{ title }}</h1>
-          <twitter-editor ref="twitterEditor" @save="handleSave" />
-          <el-card class="tips">
-            <p><span>Tip 1:</span> Avoid repeating misinformation. Say what’s true.<el-link type="primary">see more</el-link></p>
-            <p><span>Tip 2</span>: Choose your sources wisely. Try to find a credible source that the person respects.<el-link type="primary">see more</el-link></p>
-            <p><span>Tip 3</span>: Give readers a sense of where the scientific community stands and how strong the available evidence is for different views.<el-link type="primary">see more</el-link></p>
-            <p><span>Tip 4</span>: Consider headlines and images that inform rather than shock or provoke.<el-link type="primary">see more</el-link></p>
-          </el-card>
+    <div class="message-tree-layout">
+      <el-card>
+        <div style="margin-bottom: 10px">
+          <el-button type="primary" plain @click="emits('addCategory')">Add Category</el-button>
+          <el-button type="primary" plain @click="emits('changeActivedAdId', 0)">Add Message</el-button>
         </div>
-      </el-col>
-    </el-row>
+        <el-tree
+          :allow-drop="allowDrop"
+          :allow-drag="allowDrag"
+          :data="treeData"
+          draggable
+          default-expand-all
+          node-key="id"
+          :expand-on-click-node="false"
+          @node-click="handleClickTreeNode"
+          @node-drop="handleDrop"
+        >
+          <template #default="{ node, data }">
+            <span class="tree-item">
+              <span
+                :class="{ categoryName: data.children ? true : false, actived: data.label === currentCategory || data.id === activedAdId }"
+                @click="handleClickName(data)"
+              >{{ node.label }}</span>
+            </span>
+          </template>
+        </el-tree>
+      </el-card>
+    </div>
 
-    <el-button type="primary" size="large" round class="next-btn" @click="emits('done', adList)">Next</el-button>
+    <div class="adEditor">
+      <h1>{{ title }}</h1>
+      <twitter-editor ref="twitterEditor" @save="handleSave" />
+      <el-card class="tips">
+        <p><span>Tip 1:</span> Avoid repeating misinformation. Say what’s true.<el-link type="primary">see more</el-link></p>
+        <p><span>Tip 2</span>: Choose your sources wisely. Try to find a credible source that the person respects.<el-link type="primary">see more</el-link></p>
+        <p><span>Tip 3</span>: Give readers a sense of where the scientific community stands and how strong the available evidence is for different views.<el-link type="primary">see more</el-link></p>
+        <p><span>Tip 4</span>: Consider headlines and images that inform rather than shock or provoke.<el-link type="primary">see more</el-link></p>
+      </el-card>
+    </div>
+
+    <div class="button-box">
+      <el-button type="primary" size="large" round @click="emits('done', adList)">Next</el-button>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .createAds-wrapper {
-  padding: 3% 3% calc(3% + 40px);
-  min-height: 100%;
+  padding: 3%;
   box-sizing: border-box;
-  position: relative;
+  display: flex;
 }
 
-.articleUrl {
-  word-break: break-word;
-  line-height: 1.5;
-  margin-bottom: 20px;
+.message-tree-layout {
+  padding-top: 57px;
+  width: 300px;
+  margin-right: 30px;
 
-  p {
-    display: inline-block;
-    margin-right: 12px;
+  .el-card {
+    min-height: 500px;
   }
-
-  .url {
-    margin-right: 0;
-    word-break: break-all;
-  }
-}
-
-.adList-card {
-  margin-top: 57px;
-  min-height: 500px;
 }
 
 .tree-item {
@@ -229,6 +211,7 @@ watch(() => props.activedAdId, (val: number) => {
 }
 
 .adEditor {
+  flex: 1;
   display: flex;
   flex-direction: column;
 
@@ -259,9 +242,11 @@ watch(() => props.activedAdId, (val: number) => {
   }
 }
 
-.next-btn {
-  position: absolute;
-  bottom: 3%;
-  right: 3%;
+.button-box {
+  width: 20%;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
 }
 </style>
