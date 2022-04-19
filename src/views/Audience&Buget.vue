@@ -28,7 +28,7 @@ const deliveryFormData = ref({
 const demographicsFormData = ref({
   ideology: [],
   audienceTypes: [],
-  gender: 'Any',
+  gender: 'Yes',
   age: 'all',
   ageRange: {
     min: 13,
@@ -112,9 +112,6 @@ const targetingKeywords: Ref<string> = ref('')
     <el-card header="Audience characteristics">
       <el-form label-position="top" :model="demographicsFormData">
         <div class="standOut">
-          <el-form-item label="Political Ideology">
-            <political-ideology-selector v-model="demographicsFormData.ideology" />
-          </el-form-item>
           <el-form-item label="Audience Types" style="margin-bottom: 0">
             <el-checkbox-group v-model="demographicsFormData.audienceTypes" class="audienceTypes-checkbox">
               <el-checkbox label="Misinformation producers" size="large" border />
@@ -123,11 +120,14 @@ const targetingKeywords: Ref<string> = ref('')
             </el-checkbox-group>
           </el-form-item>
         </div>
-        <el-form-item label="Gender">
+        <el-form-item label="Political Ideology">
+          <political-ideology-selector v-model="demographicsFormData.ideology" />
+        </el-form-item>
+        <el-form-item label="Filter Out Bot">
           <el-radio-group v-model="demographicsFormData.gender">
-            <el-radio-button label="Any" />
-            <el-radio-button label="Women" />
-            <el-radio-button label="Men" />
+            <el-radio-button label="Yes" />
+            <el-radio-button label="No" />
+            <!-- <el-radio-button label="Men" /> -->
           </el-radio-group>
         </el-form-item>
         <!-- <el-form-item label="Age">

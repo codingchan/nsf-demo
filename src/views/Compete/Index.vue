@@ -51,13 +51,6 @@ function handleClickChart ({ type, category }: { type: string, category: string 
       <h3>[ Select your metric ]</h3>
       <div class="metricList">
         <div class="metricItem">
-          Retweets<br />Likes<br />Replies<br />Clicks
-          <div class="actions">
-            <el-button @click="viewChart('bar', true)">static</el-button>
-            <el-button @click="viewChart('bar', false)">dynamic</el-button>
-          </div>
-        </div>
-        <div class="metricItem">
           URL
           <div class="actions">
             <el-button @click="viewChart('bar', true)">static</el-button>
@@ -65,12 +58,47 @@ function handleClickChart ({ type, category }: { type: string, category: string 
           </div>
         </div>
         <div class="metricItem">
-          Machine Learning
+          Retweets
           <div class="actions">
             <el-button @click="viewChart('bar', true)">static</el-button>
             <el-button @click="viewChart('bar', false)">dynamic</el-button>
           </div>
         </div>
+        <div class="metricItem">
+          Follows
+          <div class="actions">
+            <el-button @click="viewChart('bar', true)">static</el-button>
+            <el-button @click="viewChart('bar', false)">dynamic</el-button>
+          </div>
+        </div>
+        <div class="metricItem">
+          Likes
+          <div class="actions">
+            <el-button @click="viewChart('bar', true)">static</el-button>
+            <el-button @click="viewChart('bar', false)">dynamic</el-button>
+          </div>
+        </div>
+        <div class="metricItem">
+          Replies
+          <div class="actions">
+            <el-button @click="viewChart('bar', true)">static</el-button>
+            <el-button @click="viewChart('bar', false)">dynamic</el-button>
+          </div>
+        </div>
+        <div class="metricItem">
+          Clicks
+          <div class="actions">
+            <el-button @click="viewChart('bar', true)">static</el-button>
+            <el-button @click="viewChart('bar', false)">dynamic</el-button>
+          </div>
+        </div>
+        <!-- <div class="metricItem">
+          Machine Learning
+          <div class="actions">
+            <el-button @click="viewChart('bar', true)">static</el-button>
+            <el-button @click="viewChart('bar', false)">dynamic</el-button>
+          </div>
+        </div> -->
       </div>
     </div>
 
@@ -113,6 +141,7 @@ function handleClickChart ({ type, category }: { type: string, category: string 
   width: 100%;
   margin-top: 30px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
@@ -128,6 +157,7 @@ function handleClickChart ({ type, category }: { type: string, category: string 
   line-height: 1.5;
   position: relative;
   overflow: hidden;
+  margin-bottom: 3%;
 
   .actions {
     position: absolute;
