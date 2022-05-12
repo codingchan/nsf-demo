@@ -33,7 +33,7 @@ const emits = defineEmits([
 const currentCategory: Ref<string> = ref('category1') // 当前选中的分类
 const title = computed<string>(() => {
   if (props.activedAdId) return 'Message ' + props.activedAdId
-  else return 'New Message'
+  else return 'Potential Corrections'
 })
 const twitterEditor: Ref<any> = ref(null)
 
@@ -153,7 +153,7 @@ watch(() => props.activedAdId, (val: number) => {
     <div class="adEditor">
       <h1>{{ title }}</h1>
       <twitter-editor ref="twitterEditor" @save="handleSave" />
-      <el-card class="tips">
+      <el-card header="Best Practices" class="tips">
         <p><span>Tip 1:</span> Avoid repeating misinformation. Say what’s true.<el-link type="primary">see more</el-link></p>
         <p><span>Tip 2</span>: Choose your sources wisely. Try to find a credible source that the person respects.<el-link type="primary">see more</el-link></p>
         <p><span>Tip 3</span>: Give readers a sense of where the scientific community stands and how strong the available evidence is for different views.<el-link type="primary">see more</el-link></p>

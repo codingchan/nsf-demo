@@ -27,14 +27,14 @@ const deliveryFormData = ref({
 })
 const demographicsFormData = ref({
   ideology: [],
-  audienceTypes: [],
+  targeting: [],
   gender: 'Yes',
   age: 'all',
   ageRange: {
     min: 13,
     max: 'And up'
   },
-  location: '',
+  geographicTargets: '',
   language: ''
 })
 const devicesFormData = ref({
@@ -112,11 +112,13 @@ const targetingKeywords: Ref<string> = ref('')
     <el-card header="Audience characteristics">
       <el-form label-position="top" :model="demographicsFormData">
         <div class="standOut">
-          <el-form-item label="Audience Types" style="margin-bottom: 0">
-            <el-checkbox-group v-model="demographicsFormData.audienceTypes" class="audienceTypes-checkbox">
-              <el-checkbox label="Misinformation producers" size="large" border />
-              <el-checkbox label="Spreaders" size="large" border />
-              <el-checkbox label="Observers" size="large" border />
+          <el-form-item label="Targeting" style="margin-bottom: 0">
+            <el-checkbox-group v-model="demographicsFormData.targeting" class="targeting-checkbox">
+              <el-checkbox label="Misinformation Tweeters" size="large" border />
+              <el-checkbox label="Misinformation Retweeters" size="large" border />
+              <el-checkbox label="Followers of Misinformation spreaders" size="large" border />
+              <el-checkbox label="Followees of Misinformation spreaders" size="large" border />
+              <el-checkbox label="Entire Network" size="large" border />
             </el-checkbox-group>
           </el-form-item>
         </div>
@@ -145,8 +147,8 @@ const targetingKeywords: Ref<string> = ref('')
             </el-select>
           </span>
         </el-form-item> -->
-        <el-form-item label="Location (optional)">
-          <el-input v-model="demographicsFormData.location" />
+        <el-form-item label="Geographic Targets (optional)">
+          <el-input v-model="demographicsFormData.geographicTargets" />
         </el-form-item>
         <!-- <el-form-item label="Language (optional)">
           <el-select v-model="demographicsFormData.language" clearable multiple style="width: 100%">
@@ -273,7 +275,7 @@ const targetingKeywords: Ref<string> = ref('')
   }
 }
 
-.audienceTypes-checkbox {
+.targeting-checkbox {
   .el-checkbox {
     display: flex;
     margin-bottom: 10px;

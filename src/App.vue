@@ -9,12 +9,12 @@ import Message from './views/Message/Index.vue'
 import Compete from './views/Compete/Index.vue'
 
 const timeline: Ref<any[]> = ref([
-  { key: 'trial', title: 'Your Course Correct Trial' },
-  { key: 'audience', title: 'Audience & Budget' },
+  { key: 'trial', title: 'Build Your Course Correction' },
+  { key: 'audience', title: 'Precision Guidance' },
   // { key: 'welcome', title: 'Choose' },
   // { key: 'article', title: 'Article' },
-  { key: 'message', title: 'Message Studio' },
-  { key: 'compete', title: 'Compete!' },
+  { key: 'message', title: 'Correction Studio' },
+  { key: 'compete', title: 'Select Your Course Correction' },
 ])
 const step: Ref<string> = ref('trial')
 const stepIndex = computed<number>(() => timeline.value.findIndex(ele => ele.key === step.value))

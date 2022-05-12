@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 import { ref, Ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
-import { AdType } from '@/assets/public.ts'
+import { AdType, toWords } from '@/assets/public.ts'
 import Edit from './components/edit.vue'
 import List from './components/list.vue'
 
 const emits = defineEmits(['done'])
 
 const editing: Ref<boolean> = ref(true)
- 
+
 // 分类
-const categories: Ref<string[]> = ref(['category1'])
+const categories: Ref<string[]> = ref(['Category One'])
 function addCategory () { // 新增分类
-  categories.value.push('category' + (categories.value.length + 1))
+  categories.value.push('Category ' + toWords(categories.value.length + 1))
 }
 function changeCategoryName ({ old, newName }: { old: string, newName: string }) { // 修改分类名称
   adList.value.forEach((item, index) => { // 修改该分类中的message的category属性

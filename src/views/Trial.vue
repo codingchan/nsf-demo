@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { Ref, ref } from '@vue/reactivity'
-import {
-  objectives
-} from '@/assets/options.ts'
 
 const emits = defineEmits(['done'])
 
 const formData = ref({
-  objective: '',
+  goal: '',
   name: '',
-  fundingSource: 'Credit card',
+  platform: '',
   dailyBudget: '100.00',
   totalBudget: '',
   start: new Date(),
@@ -20,23 +17,13 @@ const formData = ref({
 
 <template>
   <div class="campaignDetails-wrapper">
-    <el-card header="Your Course Correct Trial">
+    <el-card header="Build Your Course Correction">
       <el-form label-position="top" :model="formData">
-        <el-form-item label="Objective">
-          <el-select v-model="formData.objective" placeholder="Choose your objective" style="width: 100%">
-            <el-option-group
-              v-for="group in objectives"
-              :key="group.name"
-              :label="group.name"
-            >
-              <el-option
-                v-for="item in group.children"
-                :key="item.value"
-                :value="item.value"
-              >
-              {{ item.name }} ({{ item.description }})
-              </el-option>
-            </el-option-group>
+        <el-form-item label="Goal">
+          <el-select v-model="formData.goal" placeholder="Choose your goal" style="width: 100%">
+            <el-option value="reduceFlow">Reduce flow of misinformation</el-option>
+            <el-option value="boostEngagement">Boost engagement (e.g., clicks, likes, retweets, replies)</el-option>
+            <el-option value="increaseFollowers">Increase followers</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Your Trial Name (optional)">
@@ -48,9 +35,12 @@ const formData = ref({
             type="textarea"
           />
         </el-form-item>
-        <el-form-item label="Funding source">
-          <el-input v-model="formData.fundingSource" readonly />
-          <p class="tip">Remaining budget: Not available | Runs: March 11, 2022 - Present</p>
+        <el-form-item label="Platform">
+          <el-select style="width: 100%">
+            <el-option value="twitter">Twitter</el-option>
+            <el-option value="facebook">Facebook</el-option>
+            <el-option value="youtube">Youtube</el-option>
+          </el-select>
         </el-form-item>
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12">
@@ -88,10 +78,6 @@ const formData = ref({
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="Pacing">
-          <el-radio v-model="formData.pacing" label="standard">Standard (recommended)</el-radio>
-          <el-radio v-model="formData.pacing" label="accelerated">Accelerated</el-radio>
-        </el-form-item>
       </el-form>
     </el-card>
 

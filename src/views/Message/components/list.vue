@@ -14,6 +14,7 @@ const emits = defineEmits(['edit', 'delete', 'back', 'done'])
 
 <template>
   <div class="tweetList-wrapper">
+    <h1>Chart your Courses</h1>
     <div class="category-list">
       <el-space :size="20">
         <el-card
@@ -48,10 +49,15 @@ const emits = defineEmits(['edit', 'delete', 'back', 'done'])
   flex-direction: column;
 }
 
+h1 {
+  text-align: center;
+}
+
 .category-list {
   flex: 1;
   overflow: auto;
   display: flex;
+  margin: 20px 0;
 
   :deep(.el-space__item) {
     height: 100%;
@@ -118,7 +124,6 @@ const emits = defineEmits(['edit', 'delete', 'back', 'done'])
 }
 
 .bottom-btns {
-  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
