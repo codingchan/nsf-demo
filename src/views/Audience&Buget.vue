@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Ref, ref } from '@vue/reactivity'
+import { computed } from '@vue/runtime-core'
 import { Medal } from '@element-plus/icons-vue'
 import {
   ageMinList,
@@ -25,7 +26,7 @@ const deliveryFormData = ref({
   bidStrategy: 'auto',
   maxBid: '1.05'
 })
-const demographicsFormData = ref({
+const audienceFormData = ref({
   ideology: [],
   targeting: [],
   gender: 'Yes',
@@ -37,6 +38,13 @@ const demographicsFormData = ref({
   geographicTargets: '',
   language: ''
 })
+const targetingOptionDisabled = computed<boolean>(() => audienceFormData.value.targeting.includes('Entire network'))
+function handleChangeTargeting (val: string[]) {
+  if (val.includes('Entire network')) {
+    audienceFormData.value.targeting = ['Entire network']
+  }
+}
+
 const devicesFormData = ref({
   os: [],
   model: [],
@@ -110,48 +118,48 @@ const targetingKeywords: Ref<string> = ref('')
     </el-card> -->
 
     <el-card header="Audience characteristics">
-      <el-form label-position="top" :model="demographicsFormData">
+      <el-form label-position="top" :model="audienceFormData">
         <div class="standOut">
           <el-form-item label="Targeting" style="margin-bottom: 0">
-            <el-checkbox-group v-model="demographicsFormData.targeting" class="targeting-checkbox">
-              <el-checkbox label="Misinformation Tweeters" size="large" border />
-              <el-checkbox label="Misinformation Retweeters" size="large" border />
-              <el-checkbox label="Followers of Misinformation spreaders" size="large" border />
-              <el-checkbox label="Followees of Misinformation spreaders" size="large" border />
-              <el-checkbox label="Entire Network" size="large" border />
+            <el-checkbox-group v-model="audienceFormData.targeting" class="targeting-checkbox" @change="handleChangeTargeting">
+              <el-checkbox label="Misinformation tweeters" size="large" border :disabled="targetingOptionDisabled" />
+              <el-checkbox label="Misinformation retweeters" size="large" border :disabled="targetingOptionDisabled" />
+              <el-checkbox label="Followers of misinformation spreaders" size="large" border :disabled="targetingOptionDisabled" />
+              <el-checkbox label="Followees of misinformation spreaders" size="large" border :disabled="targetingOptionDisabled" />
+              <el-checkbox label="Entire network" size="large" border />
             </el-checkbox-group>
           </el-form-item>
         </div>
         <el-form-item label="Political Ideology">
-          <political-ideology-selector v-model="demographicsFormData.ideology" />
+          <political-ideology-selector v-model="audienceFormData.ideology" />
         </el-form-item>
         <el-form-item label="Filter Out Bot">
-          <el-radio-group v-model="demographicsFormData.gender">
+          <el-radio-group v-model="audienceFormData.gender">
             <el-radio-button label="Yes" />
             <el-radio-button label="No" />
             <!-- <el-radio-button label="Men" /> -->
           </el-radio-group>
         </el-form-item>
         <!-- <el-form-item label="Age">
-          <el-radio-group v-model="demographicsFormData.age">
+          <el-radio-group v-model="audienceFormData.age">
             <el-radio label="all">All</el-radio>
             <el-radio label="range">Age range</el-radio>
           </el-radio-group>
-          <span v-show="demographicsFormData.age === 'range'" style="margin-left: 15px">
-            <el-select v-model="demographicsFormData.ageRange.min" style="width: 100px;">
+          <span v-show="audienceFormData.age === 'range'" style="margin-left: 15px">
+            <el-select v-model="audienceFormData.ageRange.min" style="width: 100px;">
               <el-option v-for="item in ageMinList" :key="item" :label="item" :value="item" />
             </el-select>
             -
-            <el-select v-model="demographicsFormData.ageRange.max" style="width: 100px">
+            <el-select v-model="audienceFormData.ageRange.max" style="width: 100px">
               <el-option v-for="item in ageMaxList" :key="item" :label="item" :value="item" />
             </el-select>
           </span>
         </el-form-item> -->
         <el-form-item label="Geographic Targets (optional)">
-          <el-input v-model="demographicsFormData.geographicTargets" />
+          <el-input v-model="audienceFormData.geographicTargets" />
         </el-form-item>
         <!-- <el-form-item label="Language (optional)">
-          <el-select v-model="demographicsFormData.language" clearable multiple style="width: 100%">
+          <el-select v-model="audienceFormData.language" clearable multiple style="width: 100%">
             <el-option v-for="item in languages" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item> -->

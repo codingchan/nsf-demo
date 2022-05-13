@@ -21,9 +21,9 @@ const formData = ref({
       <el-form label-position="top" :model="formData">
         <el-form-item label="Goal">
           <el-select v-model="formData.goal" placeholder="Choose your goal" style="width: 100%">
-            <el-option value="reduceFlow">Reduce flow of misinformation</el-option>
-            <el-option value="boostEngagement">Boost engagement (e.g., clicks, likes, retweets, replies)</el-option>
-            <el-option value="increaseFollowers">Increase followers</el-option>
+            <el-option value="reduceFlow" label="Reduce flow of misinformation" />
+            <el-option value="boostEngagement" label="Boost engagement (e.g., clicks, likes, retweets, replies)" />
+            <el-option value="increaseFollowers" label="Increase followers" />
           </el-select>
         </el-form-item>
         <el-form-item label="Your Trial Name (optional)">
@@ -36,10 +36,10 @@ const formData = ref({
           />
         </el-form-item>
         <el-form-item label="Platform">
-          <el-select style="width: 100%">
-            <el-option value="twitter">Twitter</el-option>
-            <el-option value="facebook">Facebook</el-option>
-            <el-option value="youtube">Youtube</el-option>
+          <el-select v-model="formData.platform" style="width: 100%">
+            <el-option value="twitter" label="Twitter" />
+            <el-option value="facebook" label="Facebook" />
+            <el-option value="youtube" label="YouTube" />
           </el-select>
         </el-form-item>
         <el-row :gutter="20">
